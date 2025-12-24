@@ -56,6 +56,29 @@ const sketchfabViewer = document.getElementById('sketchfab-viewer'); // New Elem
 const moduleList = document.getElementById('module-list');
 const loader = document.getElementById('loader');
 
+// Mobile Menu Elements
+const menuBtn = document.getElementById('menu-btn');
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const closeSidebarBtn = document.getElementById('close-sidebar');
+
+// Mobile Menu Toggle Logic
+function toggleSidebar(show) {
+    if (show) {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
+    } else {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+    }
+}
+
+if (menuBtn) {
+    menuBtn.addEventListener('click', () => toggleSidebar(true));
+    sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+    closeSidebarBtn.addEventListener('click', () => toggleSidebar(false));
+}
+
 // Info Panel Elements
 const uiElements = {
     title: document.getElementById('info-title'),
@@ -88,7 +111,13 @@ function initSidebar() {
         const btn = document.createElement('button');
         btn.className = `nav-item w-full text-left px-4 py-3 rounded-lg flex items-center text-gray-400 hover:text-white hover:bg-white/5 transition-all group`;
         btn.dataset.id = mod.id;
-        btn.onclick = () => loadModule(mod.id);
+        btn.onclick = () => {
+            loadModule(mod.id);
+            // Close sidebar on mobile when item selected
+            if (window.innerWidth < 768) {
+                toggleSidebar(false);
+            }
+        };
 
         btn.innerHTML = `
             <svg class="w-4 h-4 mr-3 text-gray-600 group-hover:text-brand transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
