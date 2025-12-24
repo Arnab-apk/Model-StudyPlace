@@ -107,7 +107,9 @@
                     class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 group-hover:to-white transition-all">3D
                     HUB</span>
             </div>
-            <div class="flex space-x-8 text-sm font-medium text-gray-400">
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
                 <a href="index.html"
                     class="text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-brand">Home</a>
                 <a href="viewer.html" class="hover:text-brand transition-colors relative group">Explorer <span
@@ -115,6 +117,26 @@
                 <a href="about.html" class="hover:text-brand transition-colors relative group">About <span
                         class="absolute -bottom-1 left-0 w-0 h-px bg-brand transition-all group-hover:w-full"></span></a>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white hover:text-brand transition-colors">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden md:hidden absolute top-20 left-0 w-full bg-[#050810]/95 backdrop-blur-xl border-b border-white/10 p-6 flex flex-col space-y-6 shadow-2xl">
+            <a href="index.html" class="text-lg font-medium text-white block border-l-2 border-brand pl-4">Home</a>
+            <a href="viewer.html"
+                class="text-lg font-medium text-gray-400 hover:text-brand transition-colors block border-l-2 border-transparent hover:border-brand pl-4">Explorer</a>
+            <a href="about.html"
+                class="text-lg font-medium text-gray-400 hover:text-brand transition-colors block border-l-2 border-transparent hover:border-brand pl-4">About</a>
         </div>
     </nav>
 
@@ -218,6 +240,14 @@
         <p>&copy; 2025 3D Learning Hub. Educational Use Only.</p>
     </footer>
 
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 
 </html>
