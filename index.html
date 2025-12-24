@@ -26,20 +26,28 @@
                         }
                     },
                     backgroundImage: {
-                        'hero-pattern': "radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 50%)"
+                        'hero-pattern': "radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.05) 0%, transparent 50%), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)",
+                    },
+                    backgroundSize: {
+                        'hero-pattern': '100% 100%, 40px 40px, 40px 40px'
                     },
                     animation: {
-                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'float': 'float 8s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite'
                     },
                     keyframes: {
                         fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+                            '50%': { opacity: '0.6', transform: 'scale(1.1)' },
                         }
                     }
                 }
@@ -48,62 +56,108 @@
     </script>
     <style>
         body {
-            background-color: #0b0f19;
+            background-color: #050810;
             color: #fff;
         }
 
+        /* Darker background */
+
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Bouncier transition */
         }
 
         .glass-card:hover {
-            border-color: rgba(0, 240, 255, 0.5);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.15);
+            border-color: rgba(0, 240, 255, 0.4);
+            transform: translateY(-12px) scale(1.03);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            box-shadow: 0 25px 50px -12px rgba(0, 240, 255, 0.15), 0 0 20px rgba(0, 240, 255, 0.1) inset;
+        }
+
+        /* Decorative Background Blob */
+        .blob {
+            position: absolute;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col bg-hero-pattern bg-fixed">
+<body class="min-h-screen flex flex-col bg-hero-pattern bg-fixed relative overflow-x-hidden">
+
+    <!-- Decorative Blobs -->
+    <div class="blob w-[800px] h-[800px] -top-40 -left-40 animate-pulse-glow"></div>
+    <div class="blob w-[600px] h-[600px] bottom-0 right-0 bg-brand-accent/20 animate-pulse-glow"
+        style="animation-delay: 2s;"></div>
 
     <!-- Navigation -->
-    <nav class="border-b border-white/10 backdrop-blur-md sticky top-0 z-50">
+    <nav class="border-b border-white/5 backdrop-blur-xl sticky top-0 z-50 bg-black/20">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-gradient-to-tr from-brand to-brand-accent rounded-lg"></div>
-                <span class="text-xl font-bold tracking-wide">3D HUB</span>
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <div
+                    class="w-10 h-10 bg-gradient-to-tr from-brand to-brand-accent rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.3)] group-hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all duration-300">
+                </div>
+                <span
+                    class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 group-hover:to-white transition-all">3D
+                    HUB</span>
             </div>
             <div class="flex space-x-8 text-sm font-medium text-gray-400">
-                <a href="index.html" class="text-white">Home</a>
-                <a href="viewer.html" class="hover:text-brand transition-colors">Explorer</a>
-                <a href="about.html" class="hover:text-brand transition-colors">About</a>
+                <a href="index.html"
+                    class="text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-brand">Home</a>
+                <a href="viewer.html" class="hover:text-brand transition-colors relative group">Explorer <span
+                        class="absolute -bottom-1 left-0 w-0 h-px bg-brand transition-all group-hover:w-full"></span></a>
+                <a href="about.html" class="hover:text-brand transition-colors relative group">About <span
+                        class="absolute -bottom-1 left-0 w-0 h-px bg-brand transition-all group-hover:w-full"></span></a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <main class="flex-grow max-w-7xl mx-auto px-6 py-20 w-full">
-        <div class="text-center mb-24 animate-fade-in-up">
-            <h1
-                class="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500 animate-float">
-                Learn in <span class="text-brand">Dimension.</span>
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-28 w-full relative z-10">
+        <div class="text-center mb-32 animate-fade-in-up">
+            <div
+                class="inline-block mb-4 px-4 py-1.5 rounded-full border border-brand/20 bg-brand/5 text-brand text-xs font-bold tracking-widest uppercase backdrop-blur-sm animate-[fadeInUp_1s_ease-out_0.1s_forwards] opacity-0">
+                Next Gen Education
+            </div>
+            <h1 class="text-7xl md:text-8xl font-bold mb-8 leading-tight tracking-tight animate-float">
+                <span class="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-500">Learn
+                    in</span>
+                <br />
+                <span
+                    class="bg-clip-text text-transparent bg-gradient-to-r from-brand via-cyan-400 to-brand-accent drop-shadow-[0_0_30px_rgba(0,240,255,0.2)]">Dimension.</span>
             </h1>
             <p
-                class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 opacity-0 animate-[fadeInUp_0.8s_ease-out_0.2s_forwards]">
-                Interactive 3D models for the next generation of students. Explore complex machinery and anatomy
-                directly in your browser.
+                class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards] leading-relaxed">
+                Step inside the machinery. Interactive 3D models that transform abstract concepts into tangible
+                experiences.
             </p>
-            <a href="viewer.html"
-                class="inline-flex items-center px-8 py-4 bg-brand text-brand-dark font-bold rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] opacity-0 animate-[fadeInUp_0.8s_ease-out_0.4s_forwards]">
-                Launch Explorer
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </a>
+            <div
+                class="flex items-center justify-center space-x-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
+                <a href="viewer.html"
+                    class="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                    <span class="relative z-10 flex items-center">
+                        Launch Explorer
+                        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </span>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-brand to-brand-accent opacity-0 group-hover:opacity-10 transition-opacity">
+                    </div>
+                </a>
+                <a href="about.html"
+                    class="px-8 py-4 text-gray-300 font-medium hover:text-white transition-colors border border-white/10 rounded-full hover:bg-white/5 hover:border-white/30">
+                    Learn More
+                </a>
+            </div>
         </div>
 
         <!-- content Grid -->
