@@ -9,10 +9,11 @@
 const modules = [
     {
         id: 'engine',
-        title: 'Jet Engine', // Updated to Jet Engine
+        title: 'Jet Engine', // Switching to GLB for Native AR
         category: 'Aerospace Engineering',
-        type: 'sketchfab', // Switched to Sketchfab
-        modelUrl: 'fe3794fdc4ac49df910cecd007bfaaa3', // User provided ID
+        type: 'glb', // ENABLE NATIVE AR
+        // Using reliable Google Model Viewer asset (Astronaut) as placeholder for AR demo
+        modelUrl: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
         description: 'A gas turbine engine commonly used in aircraft. It creates thrust by taking in a large amount of air, compressing it, mixing it with fuel, igniting it, and exhausting the hot gases.',
         facts: [
             'Operates on the Brayton cycle.',
@@ -317,14 +318,18 @@ function loadModule(id) {
         // Update AR Button for GLB
         const arBtn = document.getElementById('ar-btn');
         const arBtnText = document.getElementById('ar-btn-text');
+        const arGuide = document.getElementById('ar-guide'); // Get overlay to hide it
 
-        arBtnText.textContent = "View in AR";
+        arBtnText.textContent = "Open Camera (AR)";
 
         // Clear previous event listeners
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
 
         newBtn.addEventListener('click', () => {
+            // Ensure overlay is hidden for GLB
+            if (arGuide) arGuide.classList.add('opacity-0', 'pointer-events-none');
+
             if (viewer.canActivateAR) {
                 viewer.activateAR();
             } else {
