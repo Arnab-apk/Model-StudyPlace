@@ -255,9 +255,15 @@ function loadModule(id) {
         viewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        // Set Source (with slight delay for smoothness)
+        // Allow Sketchfab controls to be seen on mobile by minimizing panel
+        if (window.innerWidth < 768) {
+            const panel = document.getElementById('info-panel');
+            if (panel) panel.classList.add('panel-minimized');
+        }
+
+        // Set Source (Always enable controls for user options)
         setTimeout(() => {
-            sketchfabViewer.src = `https://sketchfab.com/models/${mod.modelUrl}/embed?autostart=1&camera=0&ui_theme=dark`;
+            sketchfabViewer.src = `https://sketchfab.com/models/${mod.modelUrl}/embed?autostart=1&camera=0&ui_theme=dark&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_hint=2`;
             // Fake load completion for iframe since we can't easily track it X-domain
             setTimeout(() => {
                 loader.classList.add('opacity-0', 'pointer-events-none');
@@ -267,18 +273,35 @@ function loadModule(id) {
         // Update AR Button for Sketchfab
         const arBtn = document.getElementById('ar-btn');
         const arBtnText = document.getElementById('ar-btn-text');
-        const arToast = document.getElementById('ar-toast');
 
-        arBtnText.textContent = "AR Help";
+        // Overlay Elements
+        const arGuide = document.getElementById('ar-guide');
+        const closeGuideBtn = document.getElementById('close-ar-guide');
+
+        arBtnText.textContent = "View in AR";
 
         // Clear previous event listeners (by cloning)
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
 
+        // Show Overlay on Click
         newBtn.addEventListener('click', () => {
-            arToast.classList.remove('opacity-0');
-            setTimeout(() => arToast.classList.add('opacity-0'), 4000);
+            arGuide.classList.remove('opacity-0', 'pointer-events-none');
         });
+
+        // Close Overlay Logic
+        if (closeGuideBtn) {
+            closeGuideBtn.onclick = () => {
+                arGuide.classList.add('opacity-0', 'pointer-events-none');
+            };
+        }
+
+        // Close on background click
+        arGuide.onclick = (e) => {
+            if (e.target === arGuide) {
+                arGuide.classList.add('opacity-0', 'pointer-events-none');
+            }
+        };
 
     } else { // Default to GLB viewer
         // Switch to GLB Viewer
