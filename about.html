@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | 3D Learning Hub</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            DEFAULT: '#00F0FF',
+                            accent: '#7000FF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col p-6 max-w-3xl mx-auto">
+
+    <nav class="flex items-center space-x-4 mb-12">
+        <a href="index.html" class="flex items-center text-gray-400 hover:text-brand transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Home
+        </a>
+    </nav>
+
+    <main class="space-y-8">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">About the
+            Platform</h1>
+
+        <div class="prose prose-invert">
+            <p class="text-lg text-gray-300">
+                The 3D Learning Hub is a prototype educational platform designed to bring textbooks to life. By
+                utilizing modern WebGL technologies, we allow students to interact with complex machinery and biological
+                structures directly in the browser.
+            </p>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">Technology Stack</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li><strong class="text-brand">Google &lt;model-viewer&gt;</strong>: For high-fidelity 3D rendering and
+                    easy integration of `.glb` assets.</li>
+                <li><strong class="text-brand">Tailwind CSS</strong>: For rapid, responsive, and glassmorphic UI design.
+                </li>
+                <li><strong class="text-brand">Vanilla JS</strong>: For lightweight, fast interaction logic without
+                    heavy framework overhead.</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">Credit</h3>
+            <p class="text-gray-400">
+                3D Models provided by Google Model Viewer Assets (Creative Commons). Design inspired by cyberpunk and
+                futuristic dashboard aesthetics.
+            </p>
+        </div>
+    </main>
+</body>
+
+</html>

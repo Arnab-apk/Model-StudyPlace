@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorer | 3D Learning Hub</title>
+
+    <!-- Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            DEFAULT: '#00F0FF',
+                            accent: '#7000FF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 240, 255, 0.3);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Model Viewer customization */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --progress-bar-color: #00F0FF;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, transparent 100%);
+            border-left: 3px solid #00F0FF;
+            color: white;
+        }
+
+        .nav-item.active svg {
+            color: #00F0FF;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex text-sm md:text-base">
+
+    <!-- Sidebar -->
+    <aside class="w-64 glass-panel z-20 flex flex-col border-r border-white/5 flex-shrink-0 relative">
+        <div class="p-6 border-b border-white/5 flex items-center space-x-3">
+            <a href="index.html" class="flex items-center space-x-2 group">
+                <div
+                    class="w-6 h-6 bg-gradient-to-tr from-brand to-brand-accent rounded transform group-hover:rotate-180 transition-transform duration-500">
+                </div>
+                <span class="font-bold tracking-wide group-hover:text-brand transition-colors">3D HUB</span>
+            </a>
+        </div>
+
+        <div class="px-6 py-4">
+            <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">Modules</h2>
+            <nav id="module-list" class="space-y-1">
+                <!-- Injected via JS -->
+            </nav>
+        </div>
+
+        <div class="mt-auto p-4 border-t border-white/5">
+            <a href="about.html"
+                class="flex items-center text-gray-400 hover:text-white transition-colors p-2 rounded hover:bg-white/5">
+                <svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                About Project
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative bg-gradient-to-b from-gray-900 via-[#0B0F19] to-black">
+
+        <!-- 3D Stage -->
+        <div class="flex-1 relative">
+            <model-viewer id="viewer" src="" camera-controls auto-rotate shadow-intensity="1" exposure="0.8"
+                environment-image="neutral" alt="A 3D model" animation-name="Run" autoplay>
+
+                <div slot="progress-bar" class="absolute top-0 left-0 w-full h-1 bg-white/10">
+                    <div class="h-full bg-brand w-0 transition-all duration-300 logic-bar"></div>
+                </div>
+
+                <!-- Custom Hotspot Example -->
+                <button slot="hotspot-main"
+                    class="bg-white/10 backdrop-blur-md rounded-full px-3 py-1 text-xs border border-white/20 hover:bg-brand hover:text-black transition-colors"
+                    data-position="0 1 0" data-normal="0 1 0">
+                    Interactive Node
+                </button>
+
+            </model-viewer>
+
+            <!-- Loading Overlay -->
+            <div id="loader"
+                class="absolute inset-0 flex items-center justify-center bg-black/80 z-10 transition-opacity duration-500">
+                <div class="flex flex-col items-center">
+                    <svg class="animate-spin h-8 w-8 text-brand mb-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span class="text-xs uppercase tracking-widest text-brand animate-pulse">Initializing
+                        Environment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Panel Overlay -->
+        <div class="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-96 glass-panel rounded-2xl p-6 border-t border-brand/20 shadow-2xl transform transition-transform duration-500 translate-y-0"
+            id="info-panel">
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <span
+                        class="text-[10px] font-bold text-brand uppercase tracking-widest bg-brand/10 px-2 py-0.5 rounded"
+                        id="info-category">Category</span>
+                    <h1 class="text-2xl font-bold text-white mt-1" id="info-title">Model Title</h1>
+                </div>
+                <button onclick="document.getElementById('info-panel').classList.toggle('translate-y-[120%]')"
+                    class="text-gray-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <p class="text-gray-400 text-sm leading-relaxed mb-4" id="info-desc">
+                Description...
+            </p>
+
+            <div class="space-y-2">
+                <h3 class="text-xs font-semibold text-white uppercase tracking-wider mb-2 flex items-center">
+                    <span class="w-1 h-1 bg-brand rounded-full mr-2"></span> Key Data
+                </h3>
+                <ul class="space-y-1" id="info-facts">
+                    <!-- Facts -->
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
