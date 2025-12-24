@@ -9,16 +9,15 @@
 const modules = [
     {
         id: 'engine',
-        title: 'V6 Engine',
-        category: 'Mechanical Engineering',
-        type: 'glb', // New type field
-        // Using "Reciprocating Saw" as a high-fidelity mechanical example
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/ReciprocatingSaw.glb',
-        description: 'A reciprocating saw is a type of machine-powered saw in which the cutting action is achieved through a push-and-pull ("reciprocating") motion of the blade.',
+        title: 'Jet Engine', // Updated to Jet Engine
+        category: 'Aerospace Engineering',
+        type: 'sketchfab', // Switched to Sketchfab
+        modelUrl: 'fe3794fdc4ac49df910cecd007bfaaa3', // User provided ID
+        description: 'A gas turbine engine commonly used in aircraft. It creates thrust by taking in a large amount of air, compressing it, mixing it with fuel, igniting it, and exhausting the hot gases.',
         facts: [
-            'Converts rotary motion into linear motion.',
-            'Commonly used in construction and demolition.',
-            'Variable speed triggers allow for precision cutting.'
+            'Operates on the Brayton cycle.',
+            'Compresses air to high pressures before combustion.',
+            'Produces immense thrust for high-speed flight.'
         ]
     },
     {
