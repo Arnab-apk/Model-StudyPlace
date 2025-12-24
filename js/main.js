@@ -36,32 +36,17 @@ const modules = [
     },
     {
         id: 'dna',
-        title: 'Molecular Structure',
+        title: 'DNA Double Helix', // Updated title
         category: 'Genetics',
-        type: 'glb',
-        // Using "AlphaBlendModeTest" as it is abstract and geometric, good placeholder for DNA
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/AlphaBlendModeTest.glb',
-        description: 'A representation of complex molecular bonding and transparency modes in 3D rendering. Similar techniques are used to visualize protein folding and DNA strands.',
+        type: 'sketchfab', // Switched to Sketchfab
+        modelUrl: '60e95170b37549e3b45ee490b74bb112', // User specific ID
+        description: 'The molecule that carries genetic instructions. This model visualizes the double helix structure, formed by base pairs attached to a sugar-phosphate backbone.',
         facts: [
-            'Visualizes interior and exterior structures.',
-            'Crucial for understanding complex chemical bonds.',
-            'rendering requires advanced alpha blending techniques.'
+            'Discovered by Watson and Crick in 1953.',
+            'Contains code for all cellular functions.',
+            'Capable of self-replication during cell division.'
         ],
-        // New: Hotspots for this model
-        hotspots: [
-            {
-                name: 'bond-1',
-                position: '0.2 0.5 0.1',
-                normal: '0 1 0',
-                label: 'Hydrogen Bond'
-            },
-            {
-                name: 'bond-2',
-                position: '-0.2 0.3 -0.1',
-                normal: '1 0 0',
-                label: 'Phosphate Backbone'
-            }
-        ]
+        // Sketchfab handles hotspots internally, so we remove the manual array
     }
 ];
 
