@@ -11,6 +11,7 @@ const modules = [
         id: 'engine',
         title: 'V6 Engine',
         category: 'Mechanical Engineering',
+        type: 'glb', // New type field
         // Using "Reciprocating Saw" as a high-fidelity mechanical example
         modelUrl: 'https://modelviewer.dev/shared-assets/models/ReciprocatingSaw.glb',
         description: 'A reciprocating saw is a type of machine-powered saw in which the cutting action is achieved through a push-and-pull ("reciprocating") motion of the blade.',
@@ -22,21 +23,23 @@ const modules = [
     },
     {
         id: 'heart',
-        title: 'Cybernetic Anatomy', // Changed title to match the available "Robot" asset for demo
-        category: 'Future Biology',
+        title: 'Human Body Anatomy', // Updated per user request
+        category: 'Biology',
+        type: 'sketchfab', // New type field
         // Using "Robot Expressive" to show animation and complex parts
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
-        description: 'An advanced specialized robotic unit designed with biomimetic articulation. This model demonstrates complex joint movements similar to human anatomy.',
+        modelUrl: '9b0b079953b840bc9a13f524b60041e4', // Sketchfab ID from user
+        description: 'A comprehensive view of human anatomy, showcasing the intricate systems of muscles, bones, and organs working in harmony.',
         facts: [
-            'Includes full skeletal articulation.',
-            'Powered by a central core processor.',
-            'Demonstrates 24 degrees of freedom in movement.'
+            'Includes detailed muscular and skeletal systems.',
+            'Demonstrates the complexity of human biology.',
+            'Interactive model allows for deep exploration.'
         ]
     },
     {
         id: 'dna',
         title: 'Molecular Structure',
         category: 'Genetics',
+        type: 'glb',
         // Using "AlphaBlendModeTest" as it is abstract and geometric, good placeholder for DNA
         modelUrl: 'https://modelviewer.dev/shared-assets/models/AlphaBlendModeTest.glb',
         description: 'A representation of complex molecular bonding and transparency modes in 3D rendering. Similar techniques are used to visualize protein folding and DNA strands.',
@@ -50,6 +53,7 @@ const modules = [
 
 // DOM Elements
 const viewer = document.getElementById('viewer');
+const sketchfabViewer = document.getElementById('sketchfab-viewer'); // New Element
 const moduleList = document.getElementById('module-list');
 const loader = document.getElementById('loader');
 
@@ -143,10 +147,32 @@ function loadModule(id) {
 
     }, 300);
 
-    // Load Model (with slight delay to allow UI to update)
-    setTimeout(() => {
-        viewer.src = mod.modelUrl;
-    }, 100);
+    // Hybrid Viewer Logic
+    if (mod.type === 'sketchfab') {
+        // Switch to Iframe
+        viewer.classList.add('opacity-0', 'pointer-events-none');
+        sketchfabViewer.classList.remove('opacity-0', 'pointer-events-none');
+
+        // Set Source (with slight delay for smoothness)
+        setTimeout(() => {
+            sketchfabViewer.src = `https://sketchfab.com/models/${mod.modelUrl}/embed?autostart=1&camera=0&ui_theme=dark`;
+            // Fake load completion for iframe since we can't easily track it X-domain
+            setTimeout(() => {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+            }, 1000);
+        }, 100);
+
+    } else { // Default to GLB viewer
+        // Switch to GLB Viewer
+        sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
+        sketchfabViewer.src = ''; // Clear iframe to stop audio/video
+        viewer.classList.remove('opacity-0', 'pointer-events-none');
+
+        // Load Model
+        setTimeout(() => {
+            viewer.src = mod.modelUrl;
+        }, 100);
+    }
 }
 
 // Model Viewer Events
