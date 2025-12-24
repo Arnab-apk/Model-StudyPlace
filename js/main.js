@@ -236,6 +236,22 @@ function loadModule(id) {
             }, 1000);
         }, 100);
 
+        // Update AR Button for Sketchfab
+        const arBtn = document.getElementById('ar-btn');
+        const arBtnText = document.getElementById('ar-btn-text');
+        const arToast = document.getElementById('ar-toast');
+
+        arBtnText.textContent = "AR Help";
+
+        // Clear previous event listeners (by cloning)
+        const newBtn = arBtn.cloneNode(true);
+        arBtn.parentNode.replaceChild(newBtn, arBtn);
+
+        newBtn.addEventListener('click', () => {
+            arToast.classList.remove('opacity-0');
+            setTimeout(() => arToast.classList.add('opacity-0'), 4000);
+        });
+
     } else { // Default to GLB viewer
         // Switch to GLB Viewer
         sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
@@ -246,6 +262,26 @@ function loadModule(id) {
         setTimeout(() => {
             viewer.src = mod.modelUrl;
         }, 100);
+
+        // Update AR Button for GLB
+        const arBtn = document.getElementById('ar-btn');
+        const arBtnText = document.getElementById('ar-btn-text');
+
+        arBtnText.textContent = "View in AR";
+
+        // Clear previous event listeners
+        const newBtn = arBtn.cloneNode(true);
+        arBtn.parentNode.replaceChild(newBtn, arBtn);
+
+        newBtn.addEventListener('click', () => {
+            if (viewer.canActivateAR) {
+                viewer.activateAR();
+            } else {
+                alert("AR is not supported on this device/browser.");
+            }
+        });
+
+        // -- UPDATE HOTSPOTS --
 
         // -- UPDATE HOTSPOTS --
         // 1. Clear existing generic hotspots (keep the slot="progress-bar")
