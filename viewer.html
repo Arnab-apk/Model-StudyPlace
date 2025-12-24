@@ -92,14 +92,27 @@
             --progress-bar-color: #00F0FF;
         }
 
-        .nav-item.active {
-            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, transparent 100%);
-            border-left: 3px solid #00F0FF;
-            color: white;
+        /* Decorative Background Blob */
+        .blob {
+            position: absolute;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
         }
 
-        .nav-item.active svg {
-            color: #00F0FF;
+        /* Panel Minimizer */
+        .panel-minimized {
+            transform: translateY(calc(100% - 76px)) !important;
+            /* Keep header visible */
+        }
+
+        #toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .panel-minimized #toggle-icon {
+            transform: rotate(180deg);
         }
     </style>
 </head>
@@ -168,8 +181,6 @@
                 <div slot="progress-bar" class="absolute top-0 left-0 w-full h-1 bg-white/10">
                     <div class="h-full bg-brand w-0 transition-all duration-300 logic-bar"></div>
                 </div>
-
-
 
                 <!-- Custom Hotspot Example -->
                 <button slot="hotspot-main"
@@ -262,9 +273,9 @@
                         id="info-category">Category</span>
                     <h1 class="text-2xl font-bold text-white mt-1" id="info-title">Model Title</h1>
                 </div>
-                <button onclick="document.getElementById('info-panel').classList.toggle('translate-y-[120%]')"
-                    class="text-gray-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button onclick="document.getElementById('info-panel').classList.toggle('panel-minimized')"
+                    class="text-gray-400 hover:text-white p-2">
+                    <svg id="toggle-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
