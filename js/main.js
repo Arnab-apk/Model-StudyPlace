@@ -80,9 +80,13 @@ const modalDesc = document.getElementById('modal-desc');
 const closeModalBtn = document.getElementById('close-modal');
 
 // Modal Logic
-function openModal(title, description) {
+function openModal(title, description, isHtml = false) {
     modalTitle.textContent = title;
-    modalDesc.textContent = description;
+    if (isHtml) {
+        modalDesc.innerHTML = description;
+    } else {
+        modalDesc.textContent = description;
+    }
 
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modal.querySelector('.glass-panel').classList.remove('scale-95');
@@ -99,6 +103,29 @@ if (closeModalBtn) {
     closeModalBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
+    });
+}
+
+// Global About Button Logic
+const aboutModelBtn = document.getElementById('about-model-btn');
+let currentModuleId = null; // Track current module
+
+if (aboutModelBtn) {
+    aboutModelBtn.addEventListener('click', () => {
+        const mod = modules.find(m => m.id === currentModuleId);
+        if (mod) {
+            const factsHtml = mod.facts.map(f => `<li class="flex items-start mb-1"><span class="mr-2 text-brand">•</span>${f}</li>`).join('');
+            const content = `
+                <p class="mb-4">${mod.description}</p>
+                <div class="bg-white/5 p-3 rounded-lg">
+                    <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-2">Key Facts</h4>
+                    <ul class="text-sm text-gray-300">
+                        ${factsHtml}
+                    </ul>
+                </div>
+            `;
+            openModal(mod.title, content, true);
+        }
     });
 }
 
@@ -178,6 +205,7 @@ function initSidebar() {
 
 // Load a specific module
 function loadModule(id) {
+    currentModuleId = id; // Update global tracker
     const mod = modules.find(m => m.id === id) || modules[0];
 
     // Update Active State in Sidebar
