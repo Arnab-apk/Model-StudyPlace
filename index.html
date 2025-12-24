@@ -27,6 +27,20 @@
                     },
                     backgroundImage: {
                         'hero-pattern': "radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 50%)"
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -42,13 +56,13 @@
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(0, 240, 255, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px -10px rgba(0, 240, 255, 0.2);
+            border-color: rgba(0, 240, 255, 0.5);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.15);
         }
     </style>
 </head>
@@ -72,17 +86,18 @@
 
     <!-- Hero Section -->
     <main class="flex-grow max-w-7xl mx-auto px-6 py-20 w-full">
-        <div class="text-center mb-24">
+        <div class="text-center mb-24 animate-fade-in-up">
             <h1
-                class="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500">
+                class="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500 animate-float">
                 Learn in <span class="text-brand">Dimension.</span>
             </h1>
-            <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+            <p
+                class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 opacity-0 animate-[fadeInUp_0.8s_ease-out_0.2s_forwards]">
                 Interactive 3D models for the next generation of students. Explore complex machinery and anatomy
                 directly in your browser.
             </p>
             <a href="viewer.html"
-                class="inline-flex items-center px-8 py-4 bg-brand text-brand-dark font-bold rounded-full hover:bg-white transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                class="inline-flex items-center px-8 py-4 bg-brand text-brand-dark font-bold rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] opacity-0 animate-[fadeInUp_0.8s_ease-out_0.4s_forwards]">
                 Launch Explorer
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,11 +107,13 @@
         </div>
 
         <!-- content Grid -->
-        <h2 class="text-2xl font-bold mb-8 border-l-4 border-brand pl-4">Featured Modules</h2>
+        <h2
+            class="text-2xl font-bold mb-8 border-l-4 border-brand pl-4 opacity-0 animate-[fadeInUp_0.8s_ease-out_0.6s_forwards]">
+            Featured Modules</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'engine')"
-                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                class="glass-card p-8 rounded-2xl group cursor-pointer block opacity-0 animate-[fadeInUp_0.8s_ease-out_0.7s_forwards]">
                 <div
                     class="h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl mb-6 flex items-center justify-center border border-white/5 group-hover:border-brand/30 transition-colors">
                     <svg class="w-16 h-16 text-gray-600 group-hover:text-brand transition-colors" fill="none"
@@ -113,7 +130,7 @@
             </a>
 
             <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'heart')"
-                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                class="glass-card p-8 rounded-2xl group cursor-pointer block opacity-0 animate-[fadeInUp_0.8s_ease-out_0.8s_forwards]">
                 <div
                     class="h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl mb-6 flex items-center justify-center border border-white/5 group-hover:border-red-500/30 transition-colors">
                     <svg class="w-16 h-16 text-gray-600 group-hover:text-red-500 transition-colors" fill="none"
@@ -127,7 +144,7 @@
             </a>
 
             <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'dna')"
-                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                class="glass-card p-8 rounded-2xl group cursor-pointer block opacity-0 animate-[fadeInUp_0.8s_ease-out_0.9s_forwards]">
                 <div
                     class="h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl mb-6 flex items-center justify-center border border-white/5 group-hover:border-purple-500/30 transition-colors">
                     <svg class="w-16 h-16 text-gray-600 group-hover:text-purple-500 transition-colors" fill="none"

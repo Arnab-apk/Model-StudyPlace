@@ -12,7 +12,7 @@ const modules = [
         title: 'V6 Engine',
         category: 'Mechanical Engineering',
         // Using "Reciprocating Saw" as a high-fidelity mechanical example
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/ReciprocatingSaw.glb', 
+        modelUrl: 'https://modelviewer.dev/shared-assets/models/ReciprocatingSaw.glb',
         description: 'A reciprocating saw is a type of machine-powered saw in which the cutting action is achieved through a push-and-pull ("reciprocating") motion of the blade.',
         facts: [
             'Converts rotary motion into linear motion.',
@@ -25,7 +25,7 @@ const modules = [
         title: 'Cybernetic Anatomy', // Changed title to match the available "Robot" asset for demo
         category: 'Future Biology',
         // Using "Robot Expressive" to show animation and complex parts
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb', 
+        modelUrl: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
         description: 'An advanced specialized robotic unit designed with biomimetic articulation. This model demonstrates complex joint movements similar to human anatomy.',
         facts: [
             'Includes full skeletal articulation.',
@@ -38,7 +38,7 @@ const modules = [
         title: 'Molecular Structure',
         category: 'Genetics',
         // Using "AlphaBlendModeTest" as it is abstract and geometric, good placeholder for DNA
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/AlphaBlendModeTest.glb', 
+        modelUrl: 'https://modelviewer.dev/shared-assets/models/AlphaBlendModeTest.glb',
         description: 'A representation of complex molecular bonding and transparency modes in 3D rendering. Similar techniques are used to visualize protein folding and DNA strands.',
         facts: [
             'Visualizes interior and exterior structures.',
@@ -61,14 +61,19 @@ const uiElements = {
     facts: document.getElementById('info-facts')
 };
 
+// Add transition classes for smooth updates
+Object.values(uiElements).forEach(el => {
+    el.classList.add('transition-all', 'duration-300', 'ease-out');
+});
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     initSidebar();
-    
+
     // Check for saved topic from Landing Page
     const startTopic = localStorage.getItem('startTopic') || 'engine';
     loadModule(startTopic);
-    
+
     // Clear storage to prevent sticking
     localStorage.removeItem('startTopic');
 });
@@ -81,14 +86,14 @@ function initSidebar() {
         btn.className = `nav-item w-full text-left px-4 py-3 rounded-lg flex items-center text-gray-400 hover:text-white hover:bg-white/5 transition-all group`;
         btn.dataset.id = mod.id;
         btn.onclick = () => loadModule(mod.id);
-        
+
         btn.innerHTML = `
             <svg class="w-4 h-4 mr-3 text-gray-600 group-hover:text-brand transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
             <span class="font-medium">${mod.title}</span>
         `;
-        
+
         moduleList.appendChild(btn);
     });
 }
@@ -96,7 +101,7 @@ function initSidebar() {
 // Load a specific module
 function loadModule(id) {
     const mod = modules.find(m => m.id === id) || modules[0];
-    
+
     // Update Active State in Sidebar
     document.querySelectorAll('.nav-item').forEach(el => {
         if (el.dataset.id === id) {
@@ -108,19 +113,35 @@ function loadModule(id) {
 
     // Show Loader
     loader.classList.remove('opacity-0', 'pointer-events-none');
-    
-    // Update Data
-    uiElements.title.textContent = mod.title;
-    uiElements.category.textContent = mod.category;
-    uiElements.desc.textContent = mod.description;
-    
-    // Update Facts
-    uiElements.facts.innerHTML = mod.facts.map(fact => `
-        <li class="flex items-start text-xs text-gray-400">
-            <svg class="w-3 h-3 text-brand mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            ${fact}
-        </li>
-    `).join('');
+
+    // Fade out text
+    [uiElements.title, uiElements.category, uiElements.desc, uiElements.facts].forEach(el => {
+        el.classList.add('opacity-0', 'translate-y-2');
+        el.classList.remove('opacity-100', 'translate-y-0');
+    });
+
+    // Update Content after short delay for fade out
+    setTimeout(() => {
+        // Update Data
+        uiElements.title.textContent = mod.title;
+        uiElements.category.textContent = mod.category;
+        uiElements.desc.textContent = mod.description;
+
+        // Update Facts
+        uiElements.facts.innerHTML = mod.facts.map((fact, index) => `
+            <li class="flex items-start text-xs text-gray-400 opacity-0 translate-x-4 animate-[slideInRight_0.3s_ease-out_forwards]" style="animation-delay: ${index * 100}ms">
+                <svg class="w-3 h-3 text-brand mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                ${fact}
+            </li>
+        `).join('');
+
+        // Fade In text
+        [uiElements.title, uiElements.category, uiElements.desc, uiElements.facts].forEach(el => {
+            el.classList.remove('opacity-0', 'translate-y-2');
+            el.classList.add('opacity-100', 'translate-y-0');
+        });
+
+    }, 300);
 
     // Load Model (with slight delay to allow UI to update)
     setTimeout(() => {
