@@ -46,6 +46,23 @@ const modules = [
             'Contains code for all cellular functions.',
             'Capable of self-replication during cell division.'
         ],
+        // New: Hotspots for this model
+        hotspots: [
+            {
+                name: 'bond-1',
+                position: '0.2 0.5 0.1',
+                normal: '0 1 0',
+                label: 'Hydrogen Bond',
+                desc: 'Hydrogen bonds between base pairs hold the two strands of the DNA double helix together. These weak bonds allow the strands to separate for replication.'
+            },
+            {
+                name: 'bond-2',
+                position: '-0.2 0.3 -0.1',
+                normal: '1 0 0',
+                label: 'Phosphate Backbone',
+                desc: 'The sugar-phosphate backbone forms the structural framework of nucleic acids, including DNA and RNA. It is composed of alternating sugar and phosphate groups.'
+            }
+        ]
         // Sketchfab handles hotspots internally, so we remove the manual array
     }
 ];
@@ -55,6 +72,35 @@ const viewer = document.getElementById('viewer');
 const sketchfabViewer = document.getElementById('sketchfab-viewer'); // New Element
 const moduleList = document.getElementById('module-list');
 const loader = document.getElementById('loader');
+
+// Modal Elements
+const modal = document.getElementById('detail-modal');
+const modalTitle = document.getElementById('modal-title');
+const modalDesc = document.getElementById('modal-desc');
+const closeModalBtn = document.getElementById('close-modal');
+
+// Modal Logic
+function openModal(title, description) {
+    modalTitle.textContent = title;
+    modalDesc.textContent = description;
+
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modal.querySelector('.glass-panel').classList.remove('scale-95');
+    modal.querySelector('.glass-panel').classList.add('scale-100');
+}
+
+function closeModal() {
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modal.querySelector('.glass-panel').classList.add('scale-95');
+    modal.querySelector('.glass-panel').classList.remove('scale-100');
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+}
 
 // Mobile Menu Elements
 const menuBtn = document.getElementById('menu-btn');
@@ -215,6 +261,10 @@ function loadModule(id) {
                 button.dataset.position = hs.position;
                 button.dataset.normal = hs.normal;
                 button.textContent = hs.label;
+
+                // Click Listener for Popup
+                button.onclick = () => openModal(hs.label, hs.desc);
+
                 viewer.appendChild(button);
             });
         }

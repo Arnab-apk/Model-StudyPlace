@@ -202,6 +202,26 @@
             </div>
         </div>
 
+        <!-- Detail Popup Modal -->
+        <div id="detail-modal"
+            class="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+            <div
+                class="glass-panel max-w-sm w-full p-6 rounded-2xl transform scale-95 transition-transform duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modal-title" class="text-xl font-bold text-brand">Detail Title</h3>
+                    <button id="close-modal" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <p id="modal-desc" class="text-gray-300 text-sm leading-relaxed">
+                    Detail description goes here.
+                </p>
+            </div>
+        </div>
+
         <!-- Info Panel Overlay -->
         <div class="absolute bottom-6 left-6 right-6 md:left-auto md:right-6 md:w-96 glass-panel rounded-2xl p-6 border-t border-brand/20 shadow-2xl transform transition-transform duration-500 translate-y-0"
             id="info-panel">
