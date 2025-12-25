@@ -91,6 +91,19 @@ const modules = [
             'No server upload required.',
             'Instant AR preview.'
         ]
+    },
+    {
+        id: 'skull_explode',
+        title: 'Exploded Skull',
+        category: 'Anatomy',
+        type: 'sketchfab',
+        modelUrl: '252887e2e755427c90d9e3d0c6d3025f',
+        description: 'A detailed interactive view of the human skull, showing individual bones in an exploded view for clear identification.',
+        facts: [
+            'Shows all cranial bones separated.',
+            'Interactive rotation and zoom.',
+            'Great for learning bone relationships.'
+        ]
     }
 ];
 
@@ -326,28 +339,73 @@ function loadModule(id) {
         sketchfabViewer.src = '';
         viewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        // Reset Viewer Source
-        viewer.src = '';
-        viewer.alt = "Upload a model to view";
+        // Reset Viewer Source if switching to this module freshly
+        // But if we already loaded a file, maybe keep it? 
+        // For now, let's clear it to ensure user knows to upload
+        if (currentModuleId !== 'local_ar') {
+            viewer.src = '';
+            viewer.alt = "Upload a model to view";
+        }
 
-        // Hide loader immediately as we wait for user input
+        // Hide loader immediately
         loader.classList.add('opacity-0', 'pointer-events-none');
 
         // Setup AR Button
         const arBtn = document.getElementById('ar-btn');
         const arBtnText = document.getElementById('ar-btn-text');
-        arBtnText.textContent = "Open Camera (AR)";
+
+        // Initial State: Load Model
+        arBtnText.textContent = "Load Model";
+
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
 
-        newBtn.addEventListener('click', () => {
-            if (viewer.src && viewer.canActivateAR) {
+        // Define behaviors
+        const handleLoad = () => {
+            document.getElementById('file-input').click();
+        };
+
+        const handleAR = () => {
+            if (viewer.canActivateAR) {
                 viewer.activateAR();
             } else {
-                if (!viewer.src) alert("Please upload a model first.");
-                else alert("AR is not supported on this device/browser.");
+                alert("AR is not supported on this device/browser.");
             }
-        });
+        };
+
+        // If a model is already loaded (from previous file input), show AR button
+        if (viewer.src && viewer.src !== window.location.href) { // Simple check
+            arBtnText.textContent = "View in AR";
+            newBtn.onclick = handleAR;
+        } else {
+            newBtn.onclick = handleLoad;
+        }
+
+        // Global listener for file input to update button state
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                viewer.src = url;
+
+                // Update Button to AR mode
+                const btn = document.getElementById('ar-btn');
+                const txt = document.getElementById('ar-btn-text');
+                txt.textContent = "View in AR";
+
+                // Remove old listener and add new one
+                // Cloning again to be clean
+                const updateBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(updateBtn, btn);
+                updateBtn.addEventListener('click', () => {
+                    if (viewer.canActivateAR) {
+                        viewer.activateAR();
+                    } else {
+                        alert("AR is not supported on this device/browser.");
+                    }
+                });
+            }
+        };
 
     } else {
         // Standard GLB Mode (Jet Engine)
