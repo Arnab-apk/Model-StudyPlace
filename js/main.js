@@ -9,11 +9,10 @@
 const modules = [
     {
         id: 'engine',
-        title: 'Jet Engine', // Switching to GLB for Native AR
+        title: 'Jet Engine',
         category: 'Aerospace Engineering',
-        type: 'glb', // ENABLE NATIVE AR
-        // Using reliable Google Model Viewer asset (Astronaut) as placeholder for AR demo
-        modelUrl: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+        type: 'glb',
+        modelUrl: 'assets/models/jet_engine.glb',
         description: 'A gas turbine engine commonly used in aircraft. It creates thrust by taking in a large amount of air, compressing it, mixing it with fuel, igniting it, and exhausting the hot gases.',
         facts: [
             'Operates on the Brayton cycle.',
@@ -412,9 +411,6 @@ function loadModule(id) {
 
     } else {
         // Standard GLB Mode (Jet Engine)
-        // Hide AR button here too? User said "remove the view in ar button from the models".
-        // "i want a seperate module... to show models which are alredy given by me in glb file".
-        // This likely means standard models shouldn't have AR download/view.
 
         sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.src = '';
@@ -427,8 +423,28 @@ function loadModule(id) {
             loader.classList.add('opacity-0', 'pointer-events-none');
         }, { once: true });
 
-        // Explicitly hide AR button
-        if (arBtn) arBtn.style.display = 'none';
+        // Explicitly hide AR button by default, BUT enable for Jet Engine as requested
+        if (arBtn) {
+            if (mod.id === 'engine') {
+                arBtn.style.display = 'flex';
+                const arBtnText = document.getElementById('ar-btn-text');
+                arBtnText.textContent = "View in AR"; /* Or "Open Camera (AR)" */
+
+                // Re-bind click listener just in case it was overwritten
+                const newBtn = arBtn.cloneNode(true);
+                arBtn.parentNode.replaceChild(newBtn, arBtn);
+                newBtn.onclick = () => {
+                    if (viewer.canActivateAR) {
+                        viewer.activateAR();
+                    } else {
+                        alert("AR is not supported on this device/browser.");
+                    }
+                };
+
+            } else {
+                arBtn.style.display = 'none';
+            }
+        }
     }      // Hotspots Logic (Reused from previous)
     const existingHotspots = viewer.querySelectorAll('[slot^="hotspot-"]');
     existingHotspots.forEach(el => el.remove());
