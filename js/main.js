@@ -65,6 +65,32 @@ const modules = [
             }
         ]
         // Sketchfab handles hotspots internally, so we remove the manual array
+    },
+    {
+        id: 'anatomy_complete',
+        title: 'Complete Human Anatomy',
+        category: 'Biology',
+        type: 'sketchfab',
+        modelUrl: 'c904a5a65ae145a0bc535645c7e693af',
+        description: 'A detailed 3D model of the complete human anatomy, allowing for in-depth study of the skeletal, muscular, and organ systems.',
+        facts: [
+            'Includes all major organ systems.',
+            'Accurate skeletal structure.',
+            'Perfect for medical education.'
+        ]
+    },
+    {
+        id: 'local_ar',
+        title: 'Local AR Viewer',
+        category: 'Tools',
+        type: 'local',
+        modelUrl: '', // Will be set dynamically
+        description: 'Load your own .glb files to view them in Augmented Reality. Files remain on your device.',
+        facts: [
+            'Supports .glb and .gltf formats.',
+            'No server upload required.',
+            'Instant AR preview.'
+        ]
     }
 ];
 
@@ -73,6 +99,7 @@ const viewer = document.getElementById('viewer');
 const sketchfabViewer = document.getElementById('sketchfab-viewer'); // New Element
 const moduleList = document.getElementById('module-list');
 const loader = document.getElementById('loader');
+const fileInput = document.getElementById('file-input'); // Local File Input
 
 // Modal Elements
 const modal = document.getElementById('detail-modal');
@@ -232,7 +259,18 @@ function loadModule(id) {
         // Update Data
         uiElements.title.textContent = mod.title;
         uiElements.category.textContent = mod.category;
-        uiElements.desc.textContent = mod.description;
+
+        // Custom Description Logic for Local AR
+        if (mod.type === 'local') {
+            uiElements.desc.innerHTML = `
+                ${mod.description}<br><br>
+                <button onclick="document.getElementById('file-input').click()" class="bg-brand text-black font-bold px-4 py-2 rounded-lg hover:bg-white transition-colors w-full">
+                    Upload .glb File
+                </button>
+            `;
+        } else {
+            uiElements.desc.textContent = mod.description;
+        }
 
         // Update Facts
         uiElements.facts.innerHTML = mod.facts.map((fact, index) => `
@@ -250,101 +288,91 @@ function loadModule(id) {
 
     }, 300);
 
-    // Hybrid Viewer Logic
+    // View Logic
     if (mod.type === 'sketchfab') {
-        // Switch to Iframe
+        const arBtn = document.getElementById('ar-btn');
+        // Hide AR button for Sketchfab if desired, or keep it generic
+        // Based on previous code, we kept it but made it trigger the overlay
+        // However, for anatomy, maybe we just hide GLB viewer
         viewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        // Allow Sketchfab controls to be seen on mobile by minimizing panel
+        // Panel minimized on mobile
         if (window.innerWidth < 768) {
             const panel = document.getElementById('info-panel');
             if (panel) panel.classList.add('panel-minimized');
         }
 
-        // Set Source (Always enable controls for user options)
         setTimeout(() => {
             sketchfabViewer.src = `https://sketchfab.com/models/${mod.modelUrl}/embed?autostart=1&camera=0&ui_theme=dark&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_hint=2`;
-            // Fake load completion for iframe since we can't easily track it X-domain
             setTimeout(() => {
                 loader.classList.add('opacity-0', 'pointer-events-none');
             }, 1000);
         }, 100);
 
-        // Update AR Button for Sketchfab
-        const arBtn = document.getElementById('ar-btn');
+        // Update AR Button for Sketchfab (Standard View in AR link or just guide)
         const arBtnText = document.getElementById('ar-btn-text');
-
-        // Overlay Elements
-        const arGuide = document.getElementById('ar-guide');
-        const closeGuideBtn = document.getElementById('close-ar-guide');
-
         arBtnText.textContent = "View in AR";
-
-        // Clear previous event listeners (by cloning)
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
-
-        // Show Overlay on Click
+        const arGuide = document.getElementById('ar-guide');
         newBtn.addEventListener('click', () => {
             arGuide.classList.remove('opacity-0', 'pointer-events-none');
         });
 
-        // Close Overlay Logic
-        if (closeGuideBtn) {
-            closeGuideBtn.onclick = () => {
-                arGuide.classList.add('opacity-0', 'pointer-events-none');
-            };
-        }
-
-        // Close on background click
-        arGuide.onclick = (e) => {
-            if (e.target === arGuide) {
-                arGuide.classList.add('opacity-0', 'pointer-events-none');
-            }
-        };
-
-    } else { // Default to GLB viewer
-        // Switch to GLB Viewer
+    } else if (mod.type === 'local') {
+        // Local AR Mode
         sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
-        sketchfabViewer.src = ''; // Clear iframe to stop audio/video
+        sketchfabViewer.src = '';
         viewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        // Load Model
-        setTimeout(() => {
-            viewer.src = mod.modelUrl;
-        }, 100);
+        // Reset Viewer Source
+        viewer.src = '';
+        viewer.alt = "Upload a model to view";
 
-        // Update AR Button for GLB
+        // Hide loader immediately as we wait for user input
+        loader.classList.add('opacity-0', 'pointer-events-none');
+
+        // Setup AR Button
         const arBtn = document.getElementById('ar-btn');
         const arBtnText = document.getElementById('ar-btn-text');
-        const arGuide = document.getElementById('ar-guide'); // Get overlay to hide it
-
         arBtnText.textContent = "Open Camera (AR)";
-
-        // Clear previous event listeners
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
 
         newBtn.addEventListener('click', () => {
-            // Ensure overlay is hidden for GLB
-            if (arGuide) arGuide.classList.add('opacity-0', 'pointer-events-none');
-
-            if (viewer.canActivateAR) {
+            if (viewer.src && viewer.canActivateAR) {
                 viewer.activateAR();
             } else {
-                alert("AR is not supported on this device/browser.");
+                if (!viewer.src) alert("Please upload a model first.");
+                else alert("AR is not supported on this device/browser.");
             }
         });
 
-        // -- UPDATE HOTSPOTS --
+    } else {
+        // Standard GLB Mode (Jet Engine)
+        sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
+        sketchfabViewer.src = '';
+        viewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        // -- UPDATE HOTSPOTS --
-        // 1. Clear existing generic hotspots (keep the slot="progress-bar")
+        setTimeout(() => {
+            viewer.src = mod.modelUrl;
+        }, 100);
+
+        const arBtn = document.getElementById('ar-btn');
+        const arBtnText = document.getElementById('ar-btn-text');
+        arBtnText.textContent = "Open Camera (AR)";
+        const newBtn = arBtn.cloneNode(true);
+        arBtn.parentNode.replaceChild(newBtn, arBtn);
+        newBtn.addEventListener('click', () => {
+            if (viewer.canActivateAR) {
+                viewer.activateAR();
+            }
+        });
+
+        // Hotspots Logic (Reused from previous)
         const existingHotspots = viewer.querySelectorAll('[slot^="hotspot-"]');
         existingHotspots.forEach(el => el.remove());
-
-        // 2. Add new hotspots from data
         if (mod.hotspots) {
             mod.hotspots.forEach(hs => {
                 const button = document.createElement('button');
@@ -353,22 +381,29 @@ function loadModule(id) {
                 button.dataset.position = hs.position;
                 button.dataset.normal = hs.normal;
                 button.textContent = hs.label;
-
-                // Click Listener for Popup
                 button.onclick = () => openModal(hs.label, hs.desc);
-
                 viewer.appendChild(button);
             });
         }
     }
 }
 
+// File Input Event Listener
+fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const url = URL.createObjectURL(file);
+        viewer.src = url;
+        // Update Title to match file name (optional but nice)
+        // uiElements.title.textContent = file.name;
+    }
+});
+
 // Model Viewer Events
 viewer.addEventListener('load', () => {
-    // Hide Loader when model is ready
     setTimeout(() => {
         loader.classList.add('opacity-0', 'pointer-events-none');
-        // Clear any previous error messages
+        // Reset loader content
         loader.innerHTML = `
             <div class="flex flex-col items-center">
                 <svg class="animate-spin h-8 w-8 text-brand mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -381,16 +416,9 @@ viewer.addEventListener('load', () => {
     }, 500);
 });
 
-// Handle Errors
 viewer.addEventListener('error', (e) => {
-    // Only show error if the loader is still visible (meaning load hasn't finished)
     if (!loader.classList.contains('opacity-0')) {
         console.error("Error loading model:", e);
-        // Don't overwrite if it's just a warning, but for now we assume simple failure
-        // We will only show error if it persists.
-
-        // Sometimes model-viewer throws an error for a missing texture but the model works.
-        // We'll add a 'Retry' button instead of just text.
         loader.innerHTML = `
             <div class="text-center">
                 <p class="text-red-500 mb-2">Error Loading Model Asset</p>
@@ -401,3 +429,4 @@ viewer.addEventListener('error', (e) => {
         `;
     }
 });
+
