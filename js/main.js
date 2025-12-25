@@ -302,11 +302,14 @@ function loadModule(id) {
     }, 300);
 
     // View Logic
+    const arBtn = document.getElementById('ar-btn');
+
+    // Default: Hide AR button for all modules initially
+    if (arBtn) arBtn.style.display = 'none';
+
     if (mod.type === 'sketchfab') {
-        const arBtn = document.getElementById('ar-btn');
-        // Hide AR button for Sketchfab if desired, or keep it generic
-        // Based on previous code, we kept it but made it trigger the overlay
-        // However, for anatomy, maybe we just hide GLB viewer
+        // Ensure AR button remains hidden or remove AR logic for Sketchfab
+
         viewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.classList.remove('opacity-0', 'pointer-events-none');
 
@@ -323,18 +326,13 @@ function loadModule(id) {
             }, 1000);
         }, 100);
 
-        // Update AR Button for Sketchfab (Standard View in AR link or just guide)
-        const arBtnText = document.getElementById('ar-btn-text');
-        arBtnText.textContent = "View in AR";
-        const newBtn = arBtn.cloneNode(true);
-        arBtn.parentNode.replaceChild(newBtn, arBtn);
-        const arGuide = document.getElementById('ar-guide');
-        newBtn.addEventListener('click', () => {
-            arGuide.classList.remove('opacity-0', 'pointer-events-none');
-        });
+        // We explicitly do NOT show the AR button here anymore per user request.
 
     } else if (mod.type === 'local') {
         // Local AR Mode
+        // Show AR button for this mode ONLY
+        if (arBtn) arBtn.style.display = 'flex';
+
         sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.src = '';
         viewer.classList.remove('opacity-0', 'pointer-events-none');
@@ -351,7 +349,6 @@ function loadModule(id) {
         loader.classList.add('opacity-0', 'pointer-events-none');
 
         // Setup AR Button
-        const arBtn = document.getElementById('ar-btn');
         const arBtnText = document.getElementById('ar-btn-text');
 
         // Initial State: Load Model
@@ -359,6 +356,9 @@ function loadModule(id) {
 
         const newBtn = arBtn.cloneNode(true);
         arBtn.parentNode.replaceChild(newBtn, arBtn);
+        // Re-fetch after replace
+        const updatedArBtn = document.getElementById('ar-btn');
+        updatedArBtn.style.display = 'flex'; // Ensure visibility
 
         // Define behaviors
         const handleLoad = () => {
@@ -374,11 +374,11 @@ function loadModule(id) {
         };
 
         // If a model is already loaded (from previous file input), show AR button
-        if (viewer.src && viewer.src !== window.location.href) { // Simple check
+        if (viewer.src && viewer.src !== window.location.href && viewer.src !== '') { // Simple check
             arBtnText.textContent = "View in AR";
-            newBtn.onclick = handleAR;
+            updatedArBtn.onclick = handleAR;
         } else {
-            newBtn.onclick = handleLoad;
+            updatedArBtn.onclick = handleLoad;
         }
 
         // Global listener for file input to update button state
@@ -397,7 +397,10 @@ function loadModule(id) {
                 // Cloning again to be clean
                 const updateBtn = btn.cloneNode(true);
                 btn.parentNode.replaceChild(updateBtn, btn);
-                updateBtn.addEventListener('click', () => {
+                const finalBtn = document.getElementById('ar-btn');
+                finalBtn.style.display = 'flex';
+
+                finalBtn.addEventListener('click', () => {
                     if (viewer.canActivateAR) {
                         viewer.activateAR();
                     } else {
@@ -409,40 +412,37 @@ function loadModule(id) {
 
     } else {
         // Standard GLB Mode (Jet Engine)
+        // Hide AR button here too? User said "remove the view in ar button from the models".
+        // "i want a seperate module... to show models which are alredy given by me in glb file".
+        // This likely means standard models shouldn't have AR download/view.
+
         sketchfabViewer.classList.add('opacity-0', 'pointer-events-none');
         sketchfabViewer.src = '';
         viewer.classList.remove('opacity-0', 'pointer-events-none');
 
-        setTimeout(() => {
-            viewer.src = mod.modelUrl;
-        }, 100);
+        loader.classList.remove('opacity-0', 'pointer-events-none');
+        viewer.src = mod.modelUrl;
 
-        const arBtn = document.getElementById('ar-btn');
-        const arBtnText = document.getElementById('ar-btn-text');
-        arBtnText.textContent = "Open Camera (AR)";
-        const newBtn = arBtn.cloneNode(true);
-        arBtn.parentNode.replaceChild(newBtn, arBtn);
-        newBtn.addEventListener('click', () => {
-            if (viewer.canActivateAR) {
-                viewer.activateAR();
-            }
+        viewer.addEventListener('load', () => {
+            loader.classList.add('opacity-0', 'pointer-events-none');
+        }, { once: true });
+
+        // Explicitly hide AR button
+        if (arBtn) arBtn.style.display = 'none';
+    }      // Hotspots Logic (Reused from previous)
+    const existingHotspots = viewer.querySelectorAll('[slot^="hotspot-"]');
+    existingHotspots.forEach(el => el.remove());
+    if (mod.hotspots) {
+        mod.hotspots.forEach(hs => {
+            const button = document.createElement('button');
+            button.className = 'bg-brand/20 backdrop-blur-md rounded-full px-3 py-1 text-xs border border-brand text-white hover:bg-brand hover:text-black transition-colors font-bold shadow-[0_0_10px_rgba(0,240,255,0.3)] animate-pulse';
+            button.slot = `hotspot-${hs.name}`;
+            button.dataset.position = hs.position;
+            button.dataset.normal = hs.normal;
+            button.textContent = hs.label;
+            button.onclick = () => openModal(hs.label, hs.desc);
+            viewer.appendChild(button);
         });
-
-        // Hotspots Logic (Reused from previous)
-        const existingHotspots = viewer.querySelectorAll('[slot^="hotspot-"]');
-        existingHotspots.forEach(el => el.remove());
-        if (mod.hotspots) {
-            mod.hotspots.forEach(hs => {
-                const button = document.createElement('button');
-                button.className = 'bg-brand/20 backdrop-blur-md rounded-full px-3 py-1 text-xs border border-brand text-white hover:bg-brand hover:text-black transition-colors font-bold shadow-[0_0_10px_rgba(0,240,255,0.3)] animate-pulse';
-                button.slot = `hotspot-${hs.name}`;
-                button.dataset.position = hs.position;
-                button.dataset.normal = hs.normal;
-                button.textContent = hs.label;
-                button.onclick = () => openModal(hs.label, hs.desc);
-                viewer.appendChild(button);
-            });
-        }
     }
 }
 
