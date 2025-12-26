@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// Frontend now calls a backend proxy to Gemini for reliability and key safety
 
 /**
  * AI Chatbot for 3D Learning Hub
@@ -9,14 +9,13 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 class ChatBot {
     constructor() {
         // Configuration
-        this.API_KEY = 'AIzaSyCLKUq3yM97drroGxkCNVkCGUNWkU1EiEY'; // Note: In production, use backend proxy
-        this.MODEL_NAME = 'gemini-pro';
+        this.API_ENDPOINT = '/api/chat';
 
         // State
         this.isOpen = false;
         this.isLoading = false;
         this.history = [];
-        this.model = null;
+        this.model = null; // unused in proxy mode
 
         // Context Data
         this.contextData = `
@@ -60,16 +59,7 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
         // Setup Event Listeners
         this.setupEventListeners();
 
-        // Initialize AI Model
-        try {
-            // GoogleGenerativeAI is imported at top
-            const client = new GoogleGenerativeAI(this.API_KEY);
-            this.model = client.getGenerativeModel({ model: this.MODEL_NAME });
-            console.log('✅ Gemini Model Ready');
-        } catch (error) {
-            console.error('Model initialization error:', error);
-            this.addMessage('System: AI SDK failed to load.', 'error');
-        }
+        // No local SDK init; backend handles model communication
     }
 
     setupEventListeners() {
@@ -130,30 +120,26 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
     }
 
     async generateResponse(userMessage) {
-        if (!this.model) {
-            await this.init(); // Try to lazy init
-            if (!this.model) throw new Error('Model not initialized');
+        // Prepare payload for backend proxy
+        const payload = {
+            message: userMessage,
+            context: this.contextData,
+            history: this.history.map(msg => ({ role: msg.role, content: msg.content }))
+        };
+
+        const res = await fetch(this.API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Proxy error ${res.status}: ${text}`);
         }
 
-        // Prepare History for API
-        const apiHistory = [
-            {
-                role: 'user',
-                parts: [{ text: `You are a helpful AI assistant for the "3D Learning Hub" educational website. Context: ${this.contextData} Answer concisely.` }]
-            },
-            {
-                role: 'model',
-                parts: [{ text: "Understood. I am ready to help with questions about 3D models, anatomy, and engineering." }]
-            },
-            ...this.history.map(msg => ({
-                role: msg.role === 'user' ? 'user' : 'model',
-                parts: [{ text: msg.content }]
-            }))
-        ];
-
-        const chat = this.model.startChat({ history: apiHistory });
-        const result = await chat.sendMessage(userMessage);
-        const responseText = result.response.text();
+        const data = await res.json();
+        const responseText = data.text || 'No response';
 
         // Update Local History
         this.history.push({ role: 'user', content: userMessage });

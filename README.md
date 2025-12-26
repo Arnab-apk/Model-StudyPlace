@@ -23,3 +23,24 @@ This project is optimized for Vercel deployment as a static site.
 -   **Zero Build Step**: No `npm install` or `npm build` required. Runs natively.
 -   **Fast Loading**: Uses CDN for Tailwind and Model Viewer.
 -   **Responsive**: Full mobile support.
+
+## AI Chatbot Setup
+
+The chatbot uses a backend proxy to call Google Gemini securely.
+
+- Deploy on Vercel (recommended). The project includes `api/chat.js`.
+- Set the environment variable `GOOGLE_API_KEY` to your Gemini API key.
+- If `GOOGLE_API_KEY` is not set, the proxy will fallback to the provided key for development.
+
+### Local Dev (Vercel CLI)
+
+```bash
+npm i -g vercel
+vercel dev
+```
+
+Open `http://localhost:3000` and use the chatbot in the bottom-right.
+
+### Notes
+- Frontend sends messages to `/api/chat` with context; responses return as JSON.
+- For production, store keys only in environment variables, not client code.
