@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3D Learning Hub | Education Evolved</title>
+    <title>Explore Modules | 3D Learning Hub</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,15 +61,12 @@
             color: #fff;
         }
 
-        /* Darker background */
-
         .glass-card {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            /* Bouncier transition */
         }
 
         .glass-card:hover {
@@ -100,21 +97,21 @@
     <!-- Navigation -->
     <nav class="border-b border-white/5 backdrop-blur-xl sticky top-0 z-50 bg-black/20">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3 group cursor-pointer">
+            <a href="index.html" class="flex items-center space-x-3 group cursor-pointer">
                 <div
                     class="w-10 h-10 bg-gradient-to-tr from-brand to-brand-accent rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.3)] group-hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all duration-300">
                 </div>
                 <span
                     class="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 group-hover:to-white transition-all">3D
                     HUB</span>
-            </div>
+            </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
-                <a href="index.html"
-                    class="text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-brand">Home</a>
-                <a href="modules.html" class="hover:text-brand transition-colors relative group">Explorer <span
+                <a href="index.html" class="hover:text-brand transition-colors relative group">Home <span
                         class="absolute -bottom-1 left-0 w-0 h-px bg-brand transition-all group-hover:w-full"></span></a>
+                <a href="modules.html"
+                    class="text-white relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-brand">Explorer</a>
                 <a href="about.html" class="hover:text-brand transition-colors relative group">About <span
                         class="absolute -bottom-1 left-0 w-0 h-px bg-brand transition-all group-hover:w-full"></span></a>
             </div>
@@ -133,58 +130,102 @@
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu"
             class="hidden md:hidden absolute top-20 left-0 w-full bg-[#050810]/95 backdrop-blur-xl border-b border-white/10 p-6 flex flex-col space-y-6 shadow-2xl">
-            <a href="index.html" class="text-lg font-medium text-white block border-l-2 border-brand pl-4">Home</a>
+            <a href="index.html"
+                class="text-lg font-medium text-gray-400 hover:text-brand transition-colors block border-l-2 border-transparent hover:border-brand pl-4">Home</a>
             <a href="modules.html"
-                class="text-lg font-medium text-gray-400 hover:text-brand transition-colors block border-l-2 border-transparent hover:border-brand pl-4">Explorer</a>
+                class="text-lg font-medium text-white block border-l-2 border-brand pl-4">Explorer</a>
             <a href="about.html"
                 class="text-lg font-medium text-gray-400 hover:text-brand transition-colors block border-l-2 border-transparent hover:border-brand pl-4">About</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <main class="flex-grow max-w-7xl mx-auto px-6 py-28 w-full relative z-10">
-        <div class="text-center mb-32 animate-fade-in-up">
-            <div
-                class="inline-block mb-4 px-4 py-1.5 rounded-full border border-brand/20 bg-brand/5 text-brand text-xs font-bold tracking-widest uppercase backdrop-blur-sm animate-[fadeInUp_1s_ease-out_0.1s_forwards] opacity-0">
-                Next Gen Education
-            </div>
-            <h1 class="text-7xl md:text-8xl font-bold mb-8 leading-tight tracking-tight animate-float">
-                <span class="text-white drop-shadow-lg">Learn
-                    in</span>
-                <br />
+    <!-- Content Section -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-12 w-full relative z-10">
+        <div class="text-center mb-16 animate-fade-in-up">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight tracking-tight">
                 <span
-                    class="bg-clip-text text-transparent bg-gradient-to-r from-brand via-cyan-400 to-brand-accent drop-shadow-[0_0_30px_rgba(0,240,255,0.2)]">Dimension.</span>
+                    class="bg-clip-text text-transparent bg-gradient-to-r from-brand via-cyan-400 to-brand-accent drop-shadow-[0_0_30px_rgba(0,240,255,0.2)]">Featured
+                    Modules</span>
             </h1>
-            <p
-                class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-12 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards] leading-relaxed">
-                Step inside the machinery. Interactive 3D models that transform abstract concepts into tangible
-                experiences.
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                Explore our collection of interactive 3D learning experiences.
             </p>
-            <div
-                class="flex items-center justify-center space-x-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                <a href="modules.html"
-                    class="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-                    <span class="relative z-10 flex items-center">
-                        Launch Explorer
-                        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </span>
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-brand to-brand-accent opacity-0 group-hover:opacity-10 transition-opacity">
-                    </div>
-                </a>
-                <a href="about.html"
-                    class="px-8 py-4 text-gray-300 font-medium hover:text-white transition-colors border border-white/10 rounded-full hover:bg-white/5 hover:border-white/30">
-                    Learn More
-                </a>
-            </div>
         </div>
 
-        <!-- Content Grid (Moved to modules.html) -->
+        <!-- Content Grid (Moved from index.html) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'engine')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-brand/30 transition-all relative">
+                    <img src="assets/images/jet_engine.png" alt="Jet Engine"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Jet Engine</h3>
+                <p class="text-sm text-gray-400">Aerospace engineering. Explore turbine mechanics.</p>
+            </a>
 
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'heart')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-red-500/30 transition-all relative">
+                    <img src="assets/images/human_heart.png" alt="Human Anatomy"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Human Anatomy</h3>
+                <p class="text-sm text-gray-400">Interactive biological systems. Understand the cardiovascular flow.</p>
+            </a>
+
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'dna')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-purple-500/30 transition-all relative">
+                    <img src="assets/images/dna_helix.png" alt="DNA Helix"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">DNA Double Helix</h3>
+                <p class="text-sm text-gray-400">Genetics. The building blocks of life.</p>
+            </a>
+
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'anatomy_complete')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-blue-500/30 transition-all relative">
+                    <img src="assets/images/complete_anatomy.png" alt="Complete Anatomy"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Complete Human Anatomy</h3>
+                <p class="text-sm text-gray-400">Detailed exploration of the entire human body structure.</p>
+            </a>
+
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'local_ar')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-green-500/30 transition-all relative">
+                    <img src="assets/images/ar_viewer.png" alt="AR Viewer"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Local AR Viewer</h3>
+                <p class="text-sm text-gray-400">Upload your own .glb files to view in AR.</p>
+            </a>
+
+            <a href="viewer.html" onclick="localStorage.setItem('startTopic', 'skull_explode')"
+                class="glass-card p-8 rounded-2xl group cursor-pointer block">
+                <div
+                    class="h-48 bg-gray-900 rounded-xl mb-6 overflow-hidden border border-white/5 group-hover:border-red-500/30 transition-all relative">
+                    <img src="assets/images/exploding_skull.png" alt="Exploding Skull"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Exploding Skull</h3>
+                <p class="text-sm text-gray-400">Interactive view of cranial bone structure.</p>
+            </a>
+        </div>
     </main>
 
     <footer class="border-t border-white/5 py-8 text-center text-gray-500 text-sm">
