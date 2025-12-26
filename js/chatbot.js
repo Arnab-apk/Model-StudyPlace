@@ -9,7 +9,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 class ChatBot {
     constructor() {
         // Configuration
-        this.API_KEY = 'AIzaSyDNbfYdFAsbDRf1INC6jQeOIEQIYLzXuH4'; // Note: In production, use backend proxy
+        this.API_KEY = 'AIzaSyCLKUq3yM97drroGxkCNVkCGUNWkU1EiEY'; // Note: In production, use backend proxy
         this.MODEL_NAME = 'gemini-pro';
 
         // State
