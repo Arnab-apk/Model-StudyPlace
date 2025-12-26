@@ -14,42 +14,46 @@ const modules = [
         type: 'glb',
         modelUrl: 'assets/models/jet_engine.glb',
         icon: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-        description: 'A gas turbine engine commonly used in aircraft. It creates thrust by taking in a large amount of air, compressing it, mixing it with fuel, igniting it, and exhausting the hot gases.',
+        description: 'A comprehensive look inside a modern high-bypass turbofan jet engine. This marvel of engineering powers most commercial airliners today. The model breaks down the core components: the massive front fan that bypasses most air for efficiency, the low and high-pressure compressors that squeeze air to incredible densities, the combustion chamber where fuel ignites at 2000°C, and the turbines that extract energy to keep the cycle running. Understanding this cycle—Suck, Squeeze, Bang, Blow—is fundamental to aerospace engineering.',
         facts: [
-            'Operates on the Brayton cycle.',
-            'Compresses air to high pressures before combustion.',
-            'Produces immense thrust for high-speed flight.'
+            'Operates on the Brayton thermodynamic cycle.',
+            'The high-pressure turbine blades spin at over 10,000 RPM.',
+            'Inside temperatures can exceed the melting point of the metal parts, requiring advanced cooling.',
+            'Modern engines achieve bypass ratios of 10:1 or higher for fuel efficiency.',
+            'Generates tens of thousands of pounds of thrust.'
         ]
     },
     {
         id: 'heart',
-        title: 'Human Body Anatomy', // Updated per user request
+        title: 'Human Body Anatomy',
         category: 'Biology',
-        type: 'sketchfab', // New type field
-        // Using "Robot Expressive" to show animation and complex parts
-        modelUrl: '9b0b079953b840bc9a13f524b60041e4', // Sketchfab ID from user
+        type: 'sketchfab',
+        modelUrl: '9b0b079953b840bc9a13f524b60041e4',
         icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
-        description: 'A comprehensive view of human anatomy, showcasing the intricate systems of muscles, bones, and organs working in harmony.',
+        description: 'An interactive exploration of the human upper body anatomy, featuring the complex interplay between the muscular and skeletal systems. This model highlights the major muscle groups of the chest, shoulders, and arms (Pectoralis Major, Deltoids, Biceps Brachii) and their attachment points on the skeletal structure (Sternum, Clavicle, Humerus). Perfect for students studying kinesiology, medicine, or artistic anatomy, offering a clear view of how structure dictates function in the human body.',
         facts: [
-            'Includes detailed muscular and skeletal systems.',
-            'Demonstrates the complexity of human biology.',
-            'Interactive model allows for deep exploration.'
+            'The Pectoralis Major has two heads: Clavicular and Sternocostal.',
+            'The Deltoid muscle consists of three distinct fibers: Anterior, Lateral, and Posterior.',
+            'Bones act as levers while muscles provide the force for movement.',
+            'The human skeleton regenerates completely every 10 years.',
+            'Muscles make up approximately 40% of total body weight.'
         ]
     },
     {
         id: 'dna',
-        title: 'DNA Double Helix', // Updated title
+        title: 'DNA Double Helix',
         category: 'Genetics',
-        type: 'sketchfab', // Switched to Sketchfab
-        modelUrl: '60e95170b37549e3b45ee490b74bb112', // User specific ID
+        type: 'sketchfab',
+        modelUrl: '60e95170b37549e3b45ee490b74bb112',
         icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
-        description: 'The molecule that carries genetic instructions. This model visualizes the double helix structure, formed by base pairs attached to a sugar-phosphate backbone.',
+        description: 'Deoxyribonucleic acid (DNA) is the molecule that carries the genetic instructions for all known living organisms and many viruses. This 3D model visualizes the famous double helix structure discovered by Watson and Crick. It shows two strands coiling around each other, composed of a sugar-phosphate backbone and connected by base pairs (Adenine-Thymine and Guanine-Cytosine). This elegant structure allows DNA to replicate itself during cell division and store vast amounts of information in a microscopic space.',
         facts: [
-            'Discovered by Watson and Crick in 1953.',
-            'Contains code for all cellular functions.',
-            'Capable of self-replication during cell division.'
+            'DNA structure was first described in 1953.',
+            'Human DNA is approximately 99.9% identical between individuals.',
+            'If uncoiled, the DNA in a single cell would stretch about 2 meters long.',
+            'Adenine always pairs with Thymine, and Guanine with Cytosine.',
+            'A single gram of DNA could theoretically store 215 petabytes of data.'
         ],
-        // New: Hotspots for this model
         hotspots: [
             {
                 name: 'bond-1',
@@ -66,7 +70,6 @@ const modules = [
                 desc: 'The sugar-phosphate backbone forms the structural framework of nucleic acids, including DNA and RNA. It is composed of alternating sugar and phosphate groups.'
             }
         ]
-        // Sketchfab handles hotspots internally, so we remove the manual array
     },
     {
         id: 'anatomy_complete',
@@ -75,11 +78,13 @@ const modules = [
         type: 'sketchfab',
         modelUrl: 'c904a5a65ae145a0bc535645c7e693af',
         icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
-        description: 'A detailed 3D model of the complete human anatomy, allowing for in-depth study of the skeletal, muscular, and organ systems.',
+        description: 'Use this detailed model to navigate through the layers of the human body. From the external integumentary system (skin) down to the skeletal core. This model allows you to visualize the relative positions of major organs including the heart, lungs, liver, and intestines. Understanding spatial anatomy is crucial for medical diagnostics and surgical planning. Notice how the rib cage protects the vital thoracic organs and how the pelvic girdle supports the abdominal viscera.',
         facts: [
-            'Includes all major organ systems.',
-            'Accurate skeletal structure.',
-            'Perfect for medical education.'
+            'The adult human body has 206 bones.',
+            'The skin is the largest organ of the body.',
+            'The small intestine is about 20 feet long in adults.',
+            'The human brain contains approximately 86 billion neurons.',
+            'Blood makes up about 7% of your body weight.'
         ]
     },
     {
@@ -89,11 +94,13 @@ const modules = [
         type: 'sketchfab',
         modelUrl: '252887e2e755427c90d9e3d0c6d3025f',
         icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5.67 1.5 1.5S7.83 14 7 14s-1.5-.67-1.5-1.5S6.17 11 7 11zm3.5 4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S9 17.33 9 16.5s.67-1.5 1.5-1.5zm5-4c.83 0 1.5.67 1.5 1.5S16.17 14 15.33 14 13.83 13.33 13.83 12.5s.67-1.5 1.5-1.5z',
-        description: 'A detailed interactive view of the human skull, showing individual bones in an exploded view for clear identification.',
+        description: 'This "exploded view" dismantles the human skull to reveal the complex mosaic of 22 individual bones. You can see the Cranium (which protects the brain) and the Facial bones (which structure the face). Key bones to identify include the Frontal bone (forehead), Parietal bones (top sides), Temporal bones (temples), and the complex Sphenoid bone which sits at the base. This view is essential for understanding how these bones interlock via sutures.',
         facts: [
-            'Shows all cranial bones separated.',
-            'Interactive rotation and zoom.',
-            'Great for learning bone relationships.'
+            'The human skull consists of 22 bones (excluding ear bones).',
+            'The mandible (jawbone) is the only movable bone in the skull.',
+            'Sutures are fibrous joints that connect skull bones.',
+            'The skull contains holes called foramina for nerves and blood vessels.',
+            'Infant skulls have soft spots called fontanelles.'
         ]
     },
     {
@@ -101,13 +108,15 @@ const modules = [
         title: 'Local AR Viewer',
         category: 'Tools',
         type: 'local',
-        modelUrl: '', // Will be set dynamically
+        modelUrl: '',
         icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
-        description: 'Load your own .glb files to view them in Augmented Reality. Files remain on your device.',
+        description: 'Transform your learning space by bringing your own 3D models into reality. This tool allows you to upload .glb or .gltf files directly from your device and view them through our Augmented Reality interface. Whether you are a student visualizing a project, a teacher demonstrating a concept, or a hobbyist, this viewer inspects your layout without uploading data to a server—ensuring privacy and speed.',
         facts: [
-            'Supports .glb and .gltf formats.',
-            'No server upload required.',
-            'Instant AR preview.'
+            'Supports standard .glb and .gltf binary formats.',
+            'Files are processed locally in your browser for privacy.',
+            'Requires an ARCore (Android) or ARKit (iOS) compatible device for AR mode.',
+            'Perfect for previewing models before 3D printing.',
+            'Zero latency interactive preview.'
         ]
     }
 ];
