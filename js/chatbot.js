@@ -110,17 +110,22 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
 
         try {
             const response = await this.generateResponse(text);
-            this.addMessage(response, 'bot');
+            if (response && response.trim()) {
+                this.addMessage(response, 'bot');
+            } else {
+                this.addMessage('Sorry, I received an empty response. Please try again.', 'error');
+            }
         } catch (error) {
             console.error('Generation Error:', error);
-            this.addMessage('Sorry, something went wrong. Please try again.', 'error');
+            const errorMessage = error.message || 'Sorry, something went wrong. Please try again.';
+            this.addMessage(errorMessage, 'error');
         } finally {
             this.setLoading(false);
         }
     }
 
     async generateResponse(userMessage) {
-        // First try backend proxy
+        // Call backend proxy
         try {
             const payload = {
                 message: userMessage,
@@ -131,12 +136,24 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
             const res = await fetch(this.API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: 'omit'
             });
 
             if (!res.ok) {
-                const text = await res.text();
-                throw new Error(`Proxy error ${res.status}: ${text}`);
+                const errText = await res.text();
+                console.error('API Error Response:', errText);
+                
+                // Try to parse JSON error
+                let errorMsg = 'Unable to get a response';
+                try {
+                    const errData = JSON.parse(errText);
+                    errorMsg = errData.error || errData.message || errorMsg;
+                } catch (e) {
+                    errorMsg = errText || errorMsg;
+                }
+                
+                throw new Error(`API error: ${errorMsg}`);
             }
 
             const data = await res.json();
@@ -147,12 +164,10 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
             this.history.push({ role: 'bot', content: responseText });
 
             return responseText;
-        } catch (proxyErr) {
-            console.warn('Proxy failed, attempting client-side Gemini fallback:', proxyErr);
+        } catch (error) {
+            console.error('Generation error:', error);
+            throw error;
         }
-
-        // No client-side fallback to avoid exposing API keys
-        throw new Error('Service temporarily unavailable. Please try again later.');
     }
 
     addMessage(text, sender) {
@@ -165,16 +180,16 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
         if (isUser) {
             div.innerHTML = `
                 <div class="ml-auto bg-brand/20 text-brand rounded-lg p-3 max-w-xs border border-brand/30">
-                    <p class="text-sm">${this.escapeHtml(text)}</p>
+                    <p class="text-sm whitespace-pre-wrap break-words">${this.escapeHtml(text)}</p>
                 </div>
             `;
         } else {
             div.innerHTML = `
-                <div class="w-8 h-8 rounded-full ${isError ? 'bg-red-500/20' : 'bg-brand/20'} flex items-center justify-center flex-shrink-0">
+                <div class="w-8 h-8 rounded-full ${isError ? 'bg-red-500/20' : 'bg-brand/20'} flex items-center justify-center flex-shrink-0 flex-none">
                     <span class="text-brand text-sm">${isError ? '⚠️' : '🤖'}</span>
                 </div>
                 <div class="bg-gray-800 rounded-lg p-3 max-w-xs border ${isError ? 'border-red-500/50' : 'border-gray-700'}">
-                    <p class="text-sm ${isError ? 'text-red-400' : 'text-gray-300'}">${this.escapeHtml(text)}</p>
+                    <p class="text-sm ${isError ? 'text-red-400' : 'text-gray-300'} whitespace-pre-wrap break-words">${this.escapeHtml(text)}</p>
                 </div>
             `;
         }

@@ -30,13 +30,15 @@ const modules = [
         type: 'sketchfab',
         modelUrl: '9b0b079953b840bc9a13f524b60041e4',
         icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
-        description: 'An interactive exploration of the human upper body anatomy, featuring the complex interplay between the muscular and skeletal systems. This model highlights the major muscle groups of the chest, shoulders, and arms (Pectoralis Major, Deltoids, Biceps Brachii) and their attachment points on the skeletal structure (Sternum, Clavicle, Humerus). Perfect for students studying kinesiology, medicine, or artistic anatomy, offering a clear view of how structure dictates function in the human body.',
+        description: 'An advanced interactive study of the human upper body anatomy, focusing on the Musculoskeletal and Nervous systems. This model provides a clear view of the Brachial Plexus, the network of nerves originating from the spinal cord (C5-T1) that innervates the arm. It highlights the Rotator Cuff muscles (Supraspinatus, Infraspinatus, Teres Minor, Subscapularis) crucial for shoulder stability. Skeletal landmarks like the Acromion, Coracoid Process, and Glenoid Cavity are clearly visible, aiding in the understanding of glenohumeral joint mechanics.',
         facts: [
-            'The Pectoralis Major has two heads: Clavicular and Sternocostal.',
-            'The Deltoid muscle consists of three distinct fibers: Anterior, Lateral, and Posterior.',
-            'Bones act as levers while muscles provide the force for movement.',
-            'The human skeleton regenerates completely every 10 years.',
-            'Muscles make up approximately 40% of total body weight.'
+            'The Brachial Plexus supplies motor and sensory innervation to the upper limb.',
+            'The Rotator Cuff (SITS muscles) stabilizes the head of the humerus in the shoulder socket.',
+            'The Clavicle (collarbone) transmits forces from the upper limb to the axial skeleton.',
+            'The Deltoid muscle is the prime mover of arm abduction along the frontal plane.',
+            'Pectoralis Major acts as a Flexor, Adductor, and Medial Rotator of the arm.',
+            'The Sternocleidomastoid muscle is vital for head rotation and flexion.',
+            'Injuries to the Brachial Plexus can cause conditions like Erb\'s Palsy.'
         ]
     },
     {
@@ -46,13 +48,15 @@ const modules = [
         type: 'sketchfab',
         modelUrl: '60e95170b37549e3b45ee490b74bb112',
         icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
-        description: 'Deoxyribonucleic acid (DNA) is the molecule that carries the genetic instructions for all known living organisms and many viruses. This 3D model visualizes the famous double helix structure discovered by Watson and Crick. It shows two strands coiling around each other, composed of a sugar-phosphate backbone and connected by base pairs (Adenine-Thymine and Guanine-Cytosine). This elegant structure allows DNA to replicate itself during cell division and store vast amounts of information in a microscopic space.',
+        description: 'A detailed molecular representation of Deoxyribonucleic Acid (DNA). This B-form DNA model illustrates the antiparallel nature of the two strands running in 5\' to 3\' directions. It showcases the nitrogenous bases (Adenine, Thymine, Cytosine, Guanine) pairing via Hydrogen bonds in the center, protected by the sugar-phosphate backbone. This structure is critical for semi-conservative replication, where enzymes like Helicase unzip the strands and DNA Polymerase synthesizes new complementary strands.',
         facts: [
-            'DNA structure was first described in 1953.',
-            'Human DNA is approximately 99.9% identical between individuals.',
-            'If uncoiled, the DNA in a single cell would stretch about 2 meters long.',
-            'Adenine always pairs with Thymine, and Guanine with Cytosine.',
-            'A single gram of DNA could theoretically store 215 petabytes of data.'
+            'Adenine pairs with Thymine via 2 hydrogen bonds; Guanine with Cytosine via 3.',
+            'The double helix completes one full turn every 10.5 base pairs (approx. 3.4 nm).',
+            'DNA Helicase is the enzyme responsible for unzipping the double helix during replication.',
+            'DNA Polymerase can only synthesize DNA in the 5\' to 3\' direction.',
+            'The "leading strand" is synthesized continuously, while the "lagging strand" forms Okazaki fragments.',
+            'Histone proteins allow DNA to wrap and condense into chromosomes.',
+            'Mutations like Point Mutations or Frameshifts can alter protein synthesis.'
         ],
         hotspots: [
             {
@@ -60,14 +64,14 @@ const modules = [
                 position: '0.2 0.5 0.1',
                 normal: '0 1 0',
                 label: 'Hydrogen Bond',
-                desc: 'Hydrogen bonds between base pairs hold the two strands of the DNA double helix together. These weak bonds allow the strands to separate for replication.'
+                desc: 'Hydrogen bonds between base pairs (A-T, G-C) provide stability while allowing strand separation for replication.'
             },
             {
                 name: 'bond-2',
                 position: '-0.2 0.3 -0.1',
                 normal: '1 0 0',
                 label: 'Phosphate Backbone',
-                desc: 'The sugar-phosphate backbone forms the structural framework of nucleic acids, including DNA and RNA. It is composed of alternating sugar and phosphate groups.'
+                desc: 'Composed of alternating sugar (deoxyribose) and phosphate groups, forming the structural framework.'
             }
         ]
     },
@@ -78,13 +82,15 @@ const modules = [
         type: 'sketchfab',
         modelUrl: 'c904a5a65ae145a0bc535645c7e693af',
         icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
-        description: 'Use this detailed model to navigate through the layers of the human body. From the external integumentary system (skin) down to the skeletal core. This model allows you to visualize the relative positions of major organs including the heart, lungs, liver, and intestines. Understanding spatial anatomy is crucial for medical diagnostics and surgical planning. Notice how the rib cage protects the vital thoracic organs and how the pelvic girdle supports the abdominal viscera.',
+        description: 'A systemic overview of human physiology. This model integrates the Skeletal, Muscular, Nervous, Circulatory, Respiratory, Digestive, and Urinary systems. It visualizes the anatomical position and relationships essential for clinical medicine. Note the protection of vital organs: The brain by the Neurocranium, the heart and lungs by the Thoracic Cage, and the reproductive organs by the Pelvic Girdle. It also serves to illustrate Homeostasis—how these systems interact to maintain a stable internal environment.',
         facts: [
-            'The adult human body has 206 bones.',
-            'The skin is the largest organ of the body.',
-            'The small intestine is about 20 feet long in adults.',
-            'The human brain contains approximately 86 billion neurons.',
-            'Blood makes up about 7% of your body weight.'
+            'The Circulatory system pumps approx. 5 liters of blood throughout the body every minute.',
+            'The Respiratory system exchanges O2 and CO2 across the alveoli surface area roughly the size of a tennis court.',
+            'The Liver is the body\'s chemical factory, performing over 500 functions including detoxification.',
+            'The Nervous system transmits signals at speeds of up to 120 meters per second.',
+            'The Endocrine system regulates long-term processes via hormones secreted into the bloodstream.',
+            'The Small Intestine has villi and microvilli to maximize nutrient absorption.',
+            'Kidneys filter approx. 120-150 quarts of blood daily to produce 1-2 quarts of urine.'
         ]
     },
     {
@@ -94,13 +100,15 @@ const modules = [
         type: 'sketchfab',
         modelUrl: '252887e2e755427c90d9e3d0c6d3025f',
         icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5.67 1.5 1.5S7.83 14 7 14s-1.5-.67-1.5-1.5S6.17 11 7 11zm3.5 4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S9 17.33 9 16.5s.67-1.5 1.5-1.5zm5-4c.83 0 1.5.67 1.5 1.5S16.17 14 15.33 14 13.83 13.33 13.83 12.5s.67-1.5 1.5-1.5z',
-        description: 'This "exploded view" dismantles the human skull to reveal the complex mosaic of 22 individual bones. You can see the Cranium (which protects the brain) and the Facial bones (which structure the face). Key bones to identify include the Frontal bone (forehead), Parietal bones (top sides), Temporal bones (temples), and the complex Sphenoid bone which sits at the base. This view is essential for understanding how these bones interlock via sutures.',
+        description: 'A detailed osteological examination of the human skull (Cranium and Mandible). This exploded view separates the Neurocranium (protective vault) from the Viscerocranium (facial skeleton). Key features include the complex Sphenoid "Keystone" bone which articulates with all other cranial bones, the Ethmoid bone housing the cribriform plate for olfactory nerves, and the Temporal bones containing the inner ear structures. It also highlights the major Sutures (Coronal, Sagittal, Lambdoid) and Foramina (holes) that allow passage for cranial nerves and blood vessels.',
         facts: [
-            'The human skull consists of 22 bones (excluding ear bones).',
-            'The mandible (jawbone) is the only movable bone in the skull.',
-            'Sutures are fibrous joints that connect skull bones.',
-            'The skull contains holes called foramina for nerves and blood vessels.',
-            'Infant skulls have soft spots called fontanelles.'
+            'The Sphenoid Bone is often called the "Keystone" because it locks all other bones in place.',
+            'The Foramen Magnum is the large opening where the spinal cord connects to the brain.',
+            'The Cribriform Plate transmits olfactory nerve fibers for the sense of smell.',
+            'The Temporal Bone houses the auditory ossicles (Malleus, Incus, Stapes) - the smallest bones.',
+            'Fontanelles are soft spots in infant skulls allowing for brain growth and birth passage.',
+            'The Mandible articulates with the Temporal bone at the Temporomandibular Joint (TMJ).',
+            'There are 12 pairs of Cranial Nerves that exit through various foramina in the skull base.'
         ]
     },
     {
