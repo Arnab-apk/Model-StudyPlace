@@ -19,7 +19,27 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing "message" string in body' });
     }
 
-    const API_KEY = process.env.GOOGLE_API_KEY;
+    // Try to get API key from environment, with fallback for local development
+    let API_KEY = process.env.GOOGLE_API_KEY;
+    
+    // For local development, try to load from .env file if available
+    if (!API_KEY) {
+      try {
+        const fs = await import('fs');
+        const path = await import('path');
+        const envPath = path.resolve('.env');
+        if (fs.existsSync(envPath)) {
+          const envContent = fs.readFileSync(envPath, 'utf-8');
+          const match = envContent.match(/GOOGLE_API_KEY=(.+)/);
+          if (match && match[1]) {
+            API_KEY = match[1].trim();
+          }
+        }
+      } catch (e) {
+        // Ignore file read errors, will fail with proper error below
+      }
+    }
+    
     if (!API_KEY) {
       return res.status(500).json({ error: 'Server not configured', message: 'Missing GOOGLE_API_KEY environment variable' });
     }
