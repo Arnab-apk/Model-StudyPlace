@@ -13,6 +13,7 @@ const modules = [
         category: 'Aerospace Engineering',
         type: 'glb',
         modelUrl: 'assets/models/jet_engine.glb',
+        icon: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
         description: 'A gas turbine engine commonly used in aircraft. It creates thrust by taking in a large amount of air, compressing it, mixing it with fuel, igniting it, and exhausting the hot gases.',
         facts: [
             'Operates on the Brayton cycle.',
@@ -27,6 +28,7 @@ const modules = [
         type: 'sketchfab', // New type field
         // Using "Robot Expressive" to show animation and complex parts
         modelUrl: '9b0b079953b840bc9a13f524b60041e4', // Sketchfab ID from user
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
         description: 'A comprehensive view of human anatomy, showcasing the intricate systems of muscles, bones, and organs working in harmony.',
         facts: [
             'Includes detailed muscular and skeletal systems.',
@@ -40,6 +42,7 @@ const modules = [
         category: 'Genetics',
         type: 'sketchfab', // Switched to Sketchfab
         modelUrl: '60e95170b37549e3b45ee490b74bb112', // User specific ID
+        icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
         description: 'The molecule that carries genetic instructions. This model visualizes the double helix structure, formed by base pairs attached to a sugar-phosphate backbone.',
         facts: [
             'Discovered by Watson and Crick in 1953.',
@@ -71,6 +74,7 @@ const modules = [
         category: 'Biology',
         type: 'sketchfab',
         modelUrl: 'c904a5a65ae145a0bc535645c7e693af',
+        icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
         description: 'A detailed 3D model of the complete human anatomy, allowing for in-depth study of the skeletal, muscular, and organ systems.',
         facts: [
             'Includes all major organ systems.',
@@ -79,29 +83,31 @@ const modules = [
         ]
     },
     {
-        id: 'local_ar',
-        title: 'Local AR Viewer',
-        category: 'Tools',
-        type: 'local',
-        modelUrl: '', // Will be set dynamically
-        description: 'Load your own .glb files to view them in Augmented Reality. Files remain on your device.',
-        facts: [
-            'Supports .glb and .gltf formats.',
-            'No server upload required.',
-            'Instant AR preview.'
-        ]
-    },
-    {
         id: 'skull_explode',
         title: 'Exploded Skull',
         category: 'Anatomy',
         type: 'sketchfab',
         modelUrl: '252887e2e755427c90d9e3d0c6d3025f',
+        icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5.67 1.5 1.5S7.83 14 7 14s-1.5-.67-1.5-1.5S6.17 11 7 11zm3.5 4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S9 17.33 9 16.5s.67-1.5 1.5-1.5zm5-4c.83 0 1.5.67 1.5 1.5S16.17 14 15.33 14 13.83 13.33 13.83 12.5s.67-1.5 1.5-1.5z',
         description: 'A detailed interactive view of the human skull, showing individual bones in an exploded view for clear identification.',
         facts: [
             'Shows all cranial bones separated.',
             'Interactive rotation and zoom.',
             'Great for learning bone relationships.'
+        ]
+    },
+    {
+        id: 'local_ar',
+        title: 'Local AR Viewer',
+        category: 'Tools',
+        type: 'local',
+        modelUrl: '', // Will be set dynamically
+        icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+        description: 'Load your own .glb files to view them in Augmented Reality. Files remain on your device.',
+        facts: [
+            'Supports .glb and .gltf formats.',
+            'No server upload required.',
+            'Instant AR preview.'
         ]
     }
 ];
@@ -233,8 +239,8 @@ function initSidebar() {
         };
 
         btn.innerHTML = `
-            <svg class="w-4 h-4 mr-3 text-gray-600 group-hover:text-brand transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 0 00-1.022-.547l-2.384-.477a6 0 00-3.86.517l-.318.158a6 0 01-3.86.517L6.05 15.21a2 0 00-1.806.547M8 4h8l-1 1v5.172a2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 0 009 10.172V5L8 4z" />
+            <svg class="w-5 h-5 mr-3 text-gray-600 group-hover:text-brand transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${mod.icon}" />
             </svg>
             <span class="font-medium">${mod.title}</span>
         `;
