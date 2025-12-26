@@ -19,7 +19,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing "message" string in body' });
     }
 
-    const API_KEY = process.env.GOOGLE_API_KEY || 'AIzaSyCLKUq3yM97drroGxkCNVkCGUNWkU1EiEY';
+    const API_KEY = process.env.GOOGLE_API_KEY;
+    if (!API_KEY) {
+      return res.status(500).json({ error: 'Server not configured', message: 'Missing GOOGLE_API_KEY environment variable' });
+    }
     const model = 'gemini-1.5-flash';
 
     const contents = [];

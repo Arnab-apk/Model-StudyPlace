@@ -30,7 +30,7 @@ The chatbot uses a backend proxy to call Google Gemini securely.
 
 - Deploy on Vercel (recommended). The project includes `api/chat.js`.
 - Set the environment variable `GOOGLE_API_KEY` to your Gemini API key.
-- If `GOOGLE_API_KEY` is not set, the proxy will fallback to the provided key for development.
+- No client-side keys are used, and there is no fallback in code—`GOOGLE_API_KEY` must be configured on the server.
 
 ### Local Dev (Vercel CLI)
 
@@ -40,6 +40,12 @@ vercel dev
 ```
 
 Open `http://localhost:3000` and use the chatbot in the bottom-right.
+
+On Windows PowerShell, you can run with a temporary env var:
+
+```powershell
+$env:GOOGLE_API_KEY="YOUR_KEY_HERE"; vercel dev
+```
 
 ### Notes
 - Frontend sends messages to `/api/chat` with context; responses return as JSON.

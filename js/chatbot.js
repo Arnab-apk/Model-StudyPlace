@@ -10,8 +10,6 @@ class ChatBot {
     constructor() {
         // Configuration
         this.API_ENDPOINT = '/api/chat';
-        // Fallback key for local/dev when backend isn't available
-        this.API_KEY = 'AIzaSyCLKUq3yM97drroGxkCNVkCGUNWkU1EiEY';
 
         // State
         this.isOpen = false;
@@ -153,40 +151,8 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
             console.warn('Proxy failed, attempting client-side Gemini fallback:', proxyErr);
         }
 
-        // Fallback: call Gemini directly in the browser using ESM SDK
-        try {
-            const { GoogleGenerativeAI } = await import('@google/generative-ai');
-            const client = new GoogleGenerativeAI(this.API_KEY);
-            const model = client.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-            const apiHistory = [
-                {
-                    role: 'user',
-                    parts: [{ text: `You are a helpful AI assistant for the "3D Learning Hub" educational website. Context: ${this.contextData}\nAnswer concisely.` }]
-                },
-                {
-                    role: 'model',
-                    parts: [{ text: 'Understood. I will help with 3D models, anatomy, and engineering.' }]
-                },
-                ...this.history.map(msg => ({
-                    role: msg.role === 'user' ? 'user' : 'model',
-                    parts: [{ text: msg.content }]
-                }))
-            ];
-
-            const chat = model.startChat({ history: apiHistory });
-            const result = await chat.sendMessage(userMessage);
-            const responseText = result.response.text();
-
-            // Update Local History
-            this.history.push({ role: 'user', content: userMessage });
-            this.history.push({ role: 'bot', content: responseText });
-
-            return responseText;
-        } catch (sdkErr) {
-            console.error('Client-side Gemini fallback failed:', sdkErr);
-            throw sdkErr;
-        }
+        // No client-side fallback to avoid exposing API keys
+        throw new Error('Service temporarily unavailable. Please try again later.');
     }
 
     addMessage(text, sender) {
