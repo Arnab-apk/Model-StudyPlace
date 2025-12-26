@@ -26,13 +26,13 @@ Available 3D Models:
 This is an educational platform for learning about 3D models, anatomy, engineering, and genetics.
 `;
 
-// DOM Elements
-const chatToggle = document.getElementById('chat-toggle');
-const chatWindow = document.getElementById('chat-window');
-const chatMessages = document.getElementById('chat-messages');
-const chatInput = document.getElementById('chat-input');
-const chatSend = document.getElementById('chat-send');
-const chatLoading = document.getElementById('chat-loading');
+// DOM Elements (will be set after DOM loads)
+let chatToggle;
+let chatWindow;
+let chatMessages;
+let chatInput;
+let chatSend;
+let chatLoading;
 
 let conversationHistory = [];
 let model;
@@ -41,18 +41,50 @@ let model;
 async function initializeModel() {
     try {
         model = client.getGenerativeModel({ model: 'gemini-pro' });
+        console.log('✅ Gemini model initialized');
     } catch (error) {
         console.error('Error initializing model:', error);
     }
 }
 
-// Toggle chat window
-chatToggle.addEventListener('click', () => {
-    chatWindow.classList.toggle('hidden');
-    if (!chatWindow.classList.contains('hidden')) {
-        chatInput.focus();
+// Initialize DOM elements and event listeners
+function initializeChatbot() {
+    // Get DOM elements
+    chatToggle = document.getElementById('chat-toggle');
+    chatWindow = document.getElementById('chat-window');
+    chatMessages = document.getElementById('chat-messages');
+    chatInput = document.getElementById('chat-input');
+    chatSend = document.getElementById('chat-send');
+    chatLoading = document.getElementById('chat-loading');
+
+    // Check if elements exist
+    if (!chatToggle) {
+        console.error('Chat elements not found! Make sure chatbot HTML is loaded.');
+        return;
     }
-});
+
+    console.log('✅ Chatbot elements found');
+
+    // Toggle chat window
+    chatToggle.addEventListener('click', () => {
+        console.log('Chat button clicked');
+        chatWindow.classList.toggle('hidden');
+        if (!chatWindow.classList.contains('hidden')) {
+            chatInput.focus();
+        }
+    });
+
+    // Send message listeners
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    console.log('✅ Event listeners attached');
+}
 
 // Send message function
 async function sendMessage() {
@@ -167,7 +199,18 @@ chatInput.addEventListener('keypress', (e) => {
 
 // Initialize model on page load
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 DOM loaded, initializing chatbot...');
+    initializeChatbot();
     initializeModel();
+    
+    // Mobile input handling
+    if (window.innerWidth < 768) {
+        chatInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 300);
+        });
+    }
 });
 
 // Handle message input on mobile
