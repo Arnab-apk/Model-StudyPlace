@@ -1,15 +1,25 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 /**
  * AI Chatbot for 3D Learning Hub
  * Powered by Google Generative AI
+ * re-written using Class-based architecture for better state management
  */
 
-// Initialize Google Generative AI
-const API_KEY = 'AIzaSyDNbfYdFAsbDRf1INC6jQeOIEQIYLzXuH4';
-const { GoogleGenerativeAI } = window;
-const client = new GoogleGenerativeAI(API_KEY);
+class ChatBot {
+    constructor() {
+        // Configuration
+        this.API_KEY = 'AIzaSyDNbfYdFAsbDRf1INC6jQeOIEQIYLzXuH4'; // Note: In production, use backend proxy
+        this.MODEL_NAME = 'gemini-pro';
 
-// Model data for context
-const MODEL_DATA = `
+        // State
+        this.isOpen = false;
+        this.isLoading = false;
+        this.history = [];
+        this.model = null;
+
+        // Context Data
+        this.contextData = `
 Available 3D Models:
 1. Jet Engine - A gas turbine engine commonly used in aircraft. Operates on the Brayton cycle, compresses air to high pressures before combustion, and produces immense thrust for high-speed flight.
 
@@ -24,200 +34,188 @@ Available 3D Models:
 6. Local AR Viewer - Load your own .glb files to view them in Augmented Reality. Supports .glb and .gltf formats.
 
 This is an educational platform for learning about 3D models, anatomy, engineering, and genetics.
-`;
+        `;
 
-// DOM Elements (will be set after DOM loads)
-let chatToggle;
-let chatWindow;
-let chatMessages;
-let chatInput;
-let chatSend;
-let chatLoading;
+        // DOM Elements
+        this.elements = {
+            toggle: document.getElementById('chat-toggle'),
+            window: document.getElementById('chat-window'),
+            messages: document.getElementById('chat-messages'),
+            input: document.getElementById('chat-input'),
+            sendBtn: document.getElementById('chat-send'),
+            loading: document.getElementById('chat-loading')
+        };
 
-let conversationHistory = [];
-let model;
-
-// Initialize Gemini model
-async function initializeModel() {
-    try {
-        model = client.getGenerativeModel({ model: 'gemini-pro' });
-        console.log('✅ Gemini model initialized');
-    } catch (error) {
-        console.error('Error initializing model:', error);
-    }
-}
-
-// Initialize DOM elements and event listeners
-function initializeChatbot() {
-    // Get DOM elements
-    chatToggle = document.getElementById('chat-toggle');
-    chatWindow = document.getElementById('chat-window');
-    chatMessages = document.getElementById('chat-messages');
-    chatInput = document.getElementById('chat-input');
-    chatSend = document.getElementById('chat-send');
-    chatLoading = document.getElementById('chat-loading');
-
-    // Check if elements exist
-    if (!chatToggle) {
-        console.error('Chat elements not found! Make sure chatbot HTML is loaded.');
-        return;
+        // Initialize if elements exist
+        if (this.elements.toggle) {
+            this.init();
+        } else {
+            console.error('Chatbot elements not found. Initialization failed.');
+        }
     }
 
-    console.log('✅ Chatbot elements found');
+    async init() {
+        console.log('🤖 Initializing ChatBot...');
 
-    // Toggle chat window
-    chatToggle.addEventListener('click', () => {
-        console.log('Chat button clicked');
-        chatWindow.classList.toggle('hidden');
-        if (!chatWindow.classList.contains('hidden')) {
-            chatInput.focus();
+        // Setup Event Listeners
+        this.setupEventListeners();
+
+        // Initialize AI Model
+        try {
+            // GoogleGenerativeAI is imported at top
+            const client = new GoogleGenerativeAI(this.API_KEY);
+            this.model = client.getGenerativeModel({ model: this.MODEL_NAME });
+            console.log('✅ Gemini Model Ready');
+        } catch (error) {
+            console.error('Model initialization error:', error);
+            this.addMessage('System: AI SDK failed to load.', 'error');
         }
-    });
+    }
 
-    // Send message listeners
-    chatSend.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
+    setupEventListeners() {
+        // Toggle Chat
+        this.elements.toggle.addEventListener('click', () => this.toggleChat());
 
-    console.log('✅ Event listeners attached');
-}
+        // Send Message
+        this.elements.sendBtn.addEventListener('click', () => this.handleSend());
 
-// Send message function
-async function sendMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    // Add user message to chat
-    addMessageToChat(message, 'user');
-    chatInput.value = '';
-    chatLoading.classList.remove('hidden');
-
-    try {
-        if (!model) {
-            await initializeModel();
-        }
-
-        // Build system prompt with context
-        const systemPrompt = `You are a helpful AI assistant for the "3D Learning Hub" educational website. 
-${MODEL_DATA}
-
-Your role is to:
-- Answer questions about the 3D models available on the website
-- Provide educational information about anatomy, engineering, genetics, and science
-- Be friendly and encouraging
-- Keep responses concise and clear (2-3 sentences typically)
-- If asked about something not related to the models or education, politely redirect to the available topics
-- Include relevant facts from the model data when answering questions
-
-Always maintain an educational and helpful tone.`;
-
-        // Create chat message with history
-        const messages = conversationHistory.map(msg => ({
-            role: msg.role,
-            parts: [{ text: msg.content }]
-        }));
-
-        // Add new message
-        messages.push({
-            role: 'user',
-            parts: [{ text: message }]
+        // Enter Key
+        this.elements.input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.handleSend();
+            }
         });
 
-        // Generate response
-        const chat = model.startChat({ history: messages });
-        const result = await chat.sendMessage(message);
-        const response = result.response.text();
+        // Mobile Focus Fix
+        if (window.innerWidth < 768) {
+            this.elements.input.addEventListener('focus', () => {
+                setTimeout(() => this.scrollToBottom(), 300);
+            });
+        }
+    }
 
-        // Add bot response to chat
-        addMessageToChat(response, 'bot');
+    toggleChat() {
+        this.isOpen = !this.isOpen;
+        this.elements.window.classList.toggle('hidden');
 
-        // Store in history
-        conversationHistory.push({ role: 'user', content: message });
-        conversationHistory.push({ role: 'assistant', content: response });
+        if (this.isOpen) {
+            this.elements.input.focus();
+            this.scrollToBottom();
+        }
+    }
 
-    } catch (error) {
-        console.error('Error sending message:', error);
-        addMessageToChat('Sorry, I encountered an error. Please try again.', 'bot');
-    } finally {
-        chatLoading.classList.add('hidden');
-        scrollChatToBottom();
+    async handleSend() {
+        const text = this.elements.input.value.trim();
+        if (!text || this.isLoading) return;
+
+        // Clear input
+        this.elements.input.value = '';
+
+        // Add User Message
+        this.addMessage(text, 'user');
+
+        // Set Loading
+        this.setLoading(true);
+
+        try {
+            const response = await this.generateResponse(text);
+            this.addMessage(response, 'bot');
+        } catch (error) {
+            console.error('Generation Error:', error);
+            this.addMessage('Sorry, something went wrong. Please try again.', 'error');
+        } finally {
+            this.setLoading(false);
+        }
+    }
+
+    async generateResponse(userMessage) {
+        if (!this.model) {
+            await this.init(); // Try to lazy init
+            if (!this.model) throw new Error('Model not initialized');
+        }
+
+        // Prepare History for API
+        const apiHistory = [
+            {
+                role: 'user',
+                parts: [{ text: `You are a helpful AI assistant for the "3D Learning Hub" educational website. Context: ${this.contextData} Answer concisely.` }]
+            },
+            {
+                role: 'model',
+                parts: [{ text: "Understood. I am ready to help with questions about 3D models, anatomy, and engineering." }]
+            },
+            ...this.history.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content }]
+            }))
+        ];
+
+        const chat = this.model.startChat({ history: apiHistory });
+        const result = await chat.sendMessage(userMessage);
+        const responseText = result.response.text();
+
+        // Update Local History
+        this.history.push({ role: 'user', content: userMessage });
+        this.history.push({ role: 'bot', content: responseText });
+
+        return responseText;
+    }
+
+    addMessage(text, sender) {
+        const div = document.createElement('div');
+        div.className = 'flex gap-3 animate-fade-in-up';
+
+        const isUser = sender === 'user';
+        const isError = sender === 'error';
+
+        if (isUser) {
+            div.innerHTML = `
+                <div class="ml-auto bg-brand/20 text-brand rounded-lg p-3 max-w-xs border border-brand/30">
+                    <p class="text-sm">${this.escapeHtml(text)}</p>
+                </div>
+            `;
+        } else {
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full ${isError ? 'bg-red-500/20' : 'bg-brand/20'} flex items-center justify-center flex-shrink-0">
+                    <span class="text-brand text-sm">${isError ? '⚠️' : '🤖'}</span>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-3 max-w-xs border ${isError ? 'border-red-500/50' : 'border-gray-700'}">
+                    <p class="text-sm ${isError ? 'text-red-400' : 'text-gray-300'}">${this.escapeHtml(text)}</p>
+                </div>
+            `;
+        }
+
+        this.elements.messages.appendChild(div);
+        this.scrollToBottom();
+    }
+
+    setLoading(loading) {
+        this.isLoading = loading;
+        if (loading) {
+            this.elements.loading.classList.remove('hidden');
+        } else {
+            this.elements.loading.classList.add('hidden');
+        }
+    }
+
+    scrollToBottom() {
+        requestAnimationFrame(() => {
+            this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
+        });
+    }
+
+    escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 }
 
-// Add message to chat display
-function addMessageToChat(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'flex gap-3 animate-fade-in-up';
-
-    if (sender === 'user') {
-        messageDiv.innerHTML = `
-            <div class="ml-auto bg-brand/20 text-brand rounded-lg p-3 max-w-xs border border-brand/30">
-                <p class="text-sm">${escapeHtml(text)}</p>
-            </div>
-        `;
-    } else {
-        messageDiv.innerHTML = `
-            <div class="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center flex-shrink-0">
-                <span class="text-brand text-sm">🤖</span>
-            </div>
-            <div class="bg-gray-800 rounded-lg p-3 max-w-xs border border-gray-700">
-                <p class="text-sm text-gray-300">${escapeHtml(text)}</p>
-            </div>
-        `;
-    }
-
-    chatMessages.appendChild(messageDiv);
-    scrollChatToBottom();
-}
-
-// Scroll chat to bottom
-function scrollChatToBottom() {
-    setTimeout(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 0);
-}
-
-// Escape HTML to prevent XSS
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// Event listeners
-chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// Initialize model on page load
+// Initialize on Load
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 DOM loaded, initializing chatbot...');
-    initializeChatbot();
-    initializeModel();
-    
-    // Mobile input handling
-    if (window.innerWidth < 768) {
-        chatInput.addEventListener('focus', () => {
-            setTimeout(() => {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 300);
-        });
-    }
+    window.chatbot = new ChatBot();
 });
-
-// Handle message input on mobile
-if (window.innerWidth < 768) {
-    chatInput.addEventListener('focus', () => {
-        setTimeout(() => {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 300);
-    });
-}
