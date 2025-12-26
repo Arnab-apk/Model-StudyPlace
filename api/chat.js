@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     if (!API_KEY) {
       return res.status(500).json({ error: 'Server not configured', message: 'Missing GOOGLE_API_KEY environment variable' });
     }
-    const model = 'gemini-2.5-flash-lite';
+    const model = 'gemini-1.5-flash';
 
     const contents = [];
     // System-style context priming
