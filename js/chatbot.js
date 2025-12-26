@@ -10,6 +10,8 @@ class ChatBot {
     constructor() {
         // Configuration
         this.API_ENDPOINT = '/api/chat';
+        // Fallback key for local/dev when backend isn't available
+        this.API_KEY = 'AIzaSyCLKUq3yM97drroGxkCNVkCGUNWkU1EiEY';
 
         // State
         this.isOpen = false;
@@ -120,32 +122,71 @@ This is an educational platform for learning about 3D models, anatomy, engineeri
     }
 
     async generateResponse(userMessage) {
-        // Prepare payload for backend proxy
-        const payload = {
-            message: userMessage,
-            context: this.contextData,
-            history: this.history.map(msg => ({ role: msg.role, content: msg.content }))
-        };
+        // First try backend proxy
+        try {
+            const payload = {
+                message: userMessage,
+                context: this.contextData,
+                history: this.history.map(msg => ({ role: msg.role, content: msg.content }))
+            };
 
-        const res = await fetch(this.API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+            const res = await fetch(this.API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-        if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Proxy error ${res.status}: ${text}`);
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Proxy error ${res.status}: ${text}`);
+            }
+
+            const data = await res.json();
+            const responseText = data.text || 'No response';
+
+            // Update Local History
+            this.history.push({ role: 'user', content: userMessage });
+            this.history.push({ role: 'bot', content: responseText });
+
+            return responseText;
+        } catch (proxyErr) {
+            console.warn('Proxy failed, attempting client-side Gemini fallback:', proxyErr);
         }
 
-        const data = await res.json();
-        const responseText = data.text || 'No response';
+        // Fallback: call Gemini directly in the browser using ESM SDK
+        try {
+            const { GoogleGenerativeAI } = await import('@google/generative-ai');
+            const client = new GoogleGenerativeAI(this.API_KEY);
+            const model = client.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-        // Update Local History
-        this.history.push({ role: 'user', content: userMessage });
-        this.history.push({ role: 'bot', content: responseText });
+            const apiHistory = [
+                {
+                    role: 'user',
+                    parts: [{ text: `You are a helpful AI assistant for the "3D Learning Hub" educational website. Context: ${this.contextData}\nAnswer concisely.` }]
+                },
+                {
+                    role: 'model',
+                    parts: [{ text: 'Understood. I will help with 3D models, anatomy, and engineering.' }]
+                },
+                ...this.history.map(msg => ({
+                    role: msg.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: msg.content }]
+                }))
+            ];
 
-        return responseText;
+            const chat = model.startChat({ history: apiHistory });
+            const result = await chat.sendMessage(userMessage);
+            const responseText = result.response.text();
+
+            // Update Local History
+            this.history.push({ role: 'user', content: userMessage });
+            this.history.push({ role: 'bot', content: responseText });
+
+            return responseText;
+        } catch (sdkErr) {
+            console.error('Client-side Gemini fallback failed:', sdkErr);
+            throw sdkErr;
+        }
     }
 
     addMessage(text, sender) {

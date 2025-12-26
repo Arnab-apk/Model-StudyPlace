@@ -1,6 +1,15 @@
 export default async function handler(req, res) {
+  // Basic CORS support for local dev and file:// origins
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+
   if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
+    res.setHeader('Allow', ['POST', 'OPTIONS']);
     return res.status(405).send('Method Not Allowed');
   }
 
@@ -64,7 +73,8 @@ export default async function handler(req, res) {
     const json = await r.json();
     if (!r.ok) {
       const msg = json?.error?.message || 'Gemini API error';
-      return res.status(r.status).json({ error: msg });
+      // surface more detail to help debugging
+      return res.status(r.status).json({ error: msg, details: json });
     }
 
     const candidate = json?.candidates?.[0];
@@ -74,6 +84,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ text });
   } catch (err) {
     console.error('chat proxy error', err);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error', message: String(err?.message || err) });
   }
 }
