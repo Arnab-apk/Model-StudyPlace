@@ -51,27 +51,134 @@
         <h1 class="text-4xl font-bold bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">About the
             Platform</h1>
 
-        <div class="prose prose-invert">
+        <div class="prose prose-invert max-w-none">
             <p class="text-lg text-gray-300">
                 The 3D Learning Hub is a prototype educational platform designed to bring textbooks to life. By
                 utilizing modern WebGL technologies, we allow students to interact with complex machinery and biological
                 structures directly in the browser.
             </p>
 
-            <h3 class="text-xl font-semibold text-white mt-8 mb-4">Technology Stack</h3>
-            <ul class="list-disc pl-5 text-gray-400 space-y-2">
-                <li><strong class="text-brand">Google &lt;model-viewer&gt;</strong>: For high-fidelity 3D rendering and
-                    easy integration of `.glb` assets.</li>
-                <li><strong class="text-brand">Tailwind CSS</strong>: For rapid, responsive, and glassmorphic UI design.
-                </li>
-                <li><strong class="text-brand">Vanilla JS</strong>: For lightweight, fast interaction logic without
-                    heavy framework overhead.</li>
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🎯 Platform Overview</h3>
+            <p class="text-gray-400 mb-4">
+                This platform combines interactive 3D visualization with AI-powered learning assistance to create an immersive educational experience. Students can explore detailed anatomical structures, engineering concepts, and molecular biology through high-fidelity 3D models that respond to user interaction.
+            </p>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">✨ Key Features</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-3">
+                <li><strong class="text-brand">Interactive 3D Models</strong>: Rotate, zoom, and examine detailed models from every angle with smooth WebGL rendering</li>
+                <li><strong class="text-brand">AI Chatbot Assistant</strong>: Ask questions about any model and get intelligent, context-aware explanations powered by Google Gemini</li>
+                <li><strong class="text-brand">Augmented Reality (AR)</strong>: View 3D models in your physical space using device camera and WebXR</li>
+                <li><strong class="text-brand">Multiple Educational Models</strong>: Jet engines, human anatomy, DNA structure, skulls, and more</li>
+                <li><strong class="text-brand">Custom Model Upload</strong>: Load your own .glb/.gltf files for learning</li>
+                <li><strong class="text-brand">Mobile Optimized</strong>: Full responsive design works seamlessly on phones, tablets, and desktops</li>
+                <li><strong class="text-brand">Dark Theme UI</strong>: Eye-friendly interface with glassmorphic design elements</li>
             </ul>
 
-            <h3 class="text-xl font-semibold text-white mt-8 mb-4">Credit</h3>
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🧠 AI Learning Assistant</h3>
+            <p class="text-gray-400 mb-4">
+                The integrated chatbot uses Google's Gemini AI to provide intelligent explanations about the 3D models. It understands context about each model (Jet Engines, Human Anatomy, DNA, etc.) and can answer questions like:
+            </p>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li>"Tell me about the Jet Engine"</li>
+                <li>"How does a gas turbine engine work?"</li>
+                <li>"What is DNA and its structure?"</li>
+                <li>"Explain the human skeletal system"</li>
+                <li>"What are the major organs in the human body?"</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">📚 Available 3D Models</h3>
+            <div class="grid md:grid-cols-2 gap-4 my-4">
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-4">
+                    <h4 class="text-brand font-semibold mb-2">Jet Engine</h4>
+                    <p class="text-gray-400 text-sm">A detailed gas turbine engine with visible components, demonstrating aerospace engineering and the Brayton cycle</p>
+                </div>
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-4">
+                    <h4 class="text-brand font-semibold mb-2">Human Anatomy</h4>
+                    <p class="text-gray-400 text-sm">Complete anatomical model showing skeletal, muscular, and organ systems for medical education</p>
+                </div>
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-4">
+                    <h4 class="text-brand font-semibold mb-2">DNA Double Helix</h4>
+                    <p class="text-gray-400 text-sm">Molecular visualization of DNA structure showing base pairs and sugar-phosphate backbone</p>
+                </div>
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-4">
+                    <h4 class="text-brand font-semibold mb-2">Exploded Skull</h4>
+                    <p class="text-gray-400 text-sm">Interactive cranial anatomy with individual bones separated for detailed study</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🔧 Technology Stack</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li><strong class="text-brand">Google &lt;model-viewer&gt;</strong>: For high-fidelity 3D rendering and easy integration of `.glb` assets with optimized performance</li>
+                <li><strong class="text-brand">Tailwind CSS</strong>: For rapid, responsive, and glassmorphic UI design with dark theme support</li>
+                <li><strong class="text-brand">Vanilla JS</strong>: For lightweight, fast interaction logic without heavy framework overhead</li>
+                <li><strong class="text-brand">Google Generative AI (Gemini)</strong>: For intelligent, context-aware chatbot responses</li>
+                <li><strong class="text-brand">WebXR API</strong>: For augmented reality experiences on supported devices</li>
+                <li><strong class="text-brand">Vercel Serverless Functions</strong>: For secure backend API endpoints</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🎓 Educational Benefits</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li><strong>Engagement</strong>: Interactive 3D models keep students engaged and motivated</li>
+                <li><strong>Accessibility</strong>: Complex concepts become easier to understand through visual exploration</li>
+                <li><strong>Retention</strong>: Multi-sensory learning improves information retention</li>
+                <li><strong>Self-Paced</strong>: Students can explore at their own pace without time constraints</li>
+                <li><strong>AI Support</strong>: Instant answers to questions without waiting for instructor assistance</li>
+                <li><strong>Real-World Application</strong>: See how concepts apply to actual objects and systems</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">📱 Device Support</h3>
+            <div class="grid md:grid-cols-3 gap-4 my-4">
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-3 text-center">
+                    <p class="text-brand font-semibold mb-2">Desktop</p>
+                    <p class="text-gray-400 text-sm">Full features with keyboard and mouse controls</p>
+                </div>
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-3 text-center">
+                    <p class="text-brand font-semibold mb-2">Tablet</p>
+                    <p class="text-gray-400 text-sm">Touch-optimized with responsive layout</p>
+                </div>
+                <div class="bg-gray-800/50 border border-brand/20 rounded-lg p-3 text-center">
+                    <p class="text-brand font-semibold mb-2">Mobile</p>
+                    <p class="text-gray-400 text-sm">AR-capable for immersive learning</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🚀 Deployment & Performance</h3>
+            <p class="text-gray-400 mb-2">
+                The platform is optimized for performance and reliability:
+            </p>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li><strong>Vercel Hosting</strong>: Global CDN for fast content delivery</li>
+                <li><strong>Serverless API</strong>: Scalable backend without server management</li>
+                <li><strong>Environment Variables</strong>: Secure API key management</li>
+                <li><strong>CORS Protection</strong>: Secure cross-origin requests</li>
+                <li><strong>Error Handling</strong>: Graceful fallbacks and detailed error messages</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">📋 Use Cases</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li><strong>Medical Education</strong>: Students learning human anatomy and physiology</li>
+                <li><strong>Engineering Classes</strong>: Understanding mechanical systems and components</li>
+                <li><strong>Biology Courses</strong>: Molecular structure and genetic concepts</li>
+                <li><strong>Self-Study</strong>: Individuals interested in learning complex topics</li>
+                <li><strong>Museum Exhibits</strong>: Interactive education in physical spaces</li>
+                <li><strong>Online Learning Platforms</strong>: Enhanced course material with 3D content</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">💡 Future Enhancements</h3>
+            <ul class="list-disc pl-5 text-gray-400 space-y-2">
+                <li>Annotation tools for marking and labeling model parts</li>
+                <li>Quiz and assessment integration</li>
+                <li>Multi-language support</li>
+                <li>Model comparison tools</li>
+                <li>Educational analytics dashboard</li>
+                <li>Collaborative learning features</li>
+                <li>Video tutorials and guided tours</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-white mt-8 mb-4">🏆 Credit</h3>
             <p class="text-gray-400">
                 3D Models provided by Google Model Viewer Assets (Creative Commons). Design inspired by cyberpunk and
-                futuristic dashboard aesthetics.
+                futuristic dashboard aesthetics. Built with modern web technologies for maximum accessibility and performance.
             </p>
         </div>
     </main>
